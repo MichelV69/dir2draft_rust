@@ -29,10 +29,6 @@ fn main() {
 
         let path_elemets : Vec<_>= full_path.split("/").collect();
 
-        // println!("DEBUG full_path[{}]", full_path);
-        // println!("DEBUG #path_elemets[{}]", path_elemets.len());
-        // println!("DEBUG path_elemets.0[{}]", path_elemets[0]);
-
       if path_elemets.len() == 3 {
 
         let found_part = path_elemets[0];
@@ -59,6 +55,8 @@ fn main() {
             println!("{}",output);
             writeln!(write_ptr,  "{} \n",output).expect("ER02 - Expect valid write pointer");
         }
+
+        //TODO: need to sort project.scenes in alpha/case/numeric order
 
       }
 
