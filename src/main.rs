@@ -19,6 +19,11 @@ use crate::implementations::List::*;
 use crate::structs::List::*;
 use crate::traits::List::*;
 
+enum appErrors {
+    iAmAlright,
+    genericError
+}
+
 fn main() {
     // ---- will be incoming ARGs
     let content_path = "./content";

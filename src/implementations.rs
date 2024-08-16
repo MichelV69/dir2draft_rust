@@ -2,6 +2,7 @@
 pub mod List {
     use crate::structs::List::*;
     use crate::traits::List::*;
+    use crate::appErrors::*;
 
     impl Title {
         fn new() -> Self {
@@ -50,10 +51,14 @@ pub mod List {
 
     impl PartFns for Book {
         fn is_a_new_part(&mut self, unsorted_title: &str) -> bool {
-            !self.part_list.any(|&i| i == &unsorted_title)
+            !self.part_list.iter().any(|&i| i.title.sort_by == unsorted_title)
         }
 
-        fn for_part(&mut self, new_title: &str, new_content: &str) -> Result<(), ()> {}
+        fn for_part(&mut self, new_title: &str, new_content: &str) -> Result<(), ()> {
+            if true {Some("okay")}
+            else {Err(genericError)}
+
+        }
     }
 }
 
