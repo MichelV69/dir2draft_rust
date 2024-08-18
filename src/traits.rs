@@ -17,6 +17,7 @@ pub mod List {
 
     pub trait PartImpls {
      fn sort_part_list(book : Self) -> Self;
+     fn smart_title(sortable_title : &str) -> String;
         // fn is_a_new_part(&mut self, unsorted_title: &str) -> bool;
         // fn for_part(&mut self, new_title: &str) -> Result<Option<&Part>, appErrors>;
     }

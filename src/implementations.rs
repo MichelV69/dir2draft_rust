@@ -1,5 +1,6 @@
 // --- implementations.rs
 pub mod List {
+    use itertools::Itertools;
     use crate::error_handling::*;
     use crate::error_handling::AppErrors::*;
     use crate::structs::List::*;
@@ -59,6 +60,11 @@ pub mod List {
                 .sort_by(|a, b| a.title.sort_by.partial_cmp(&b.title.sort_by)
                 .expect(&getExpected(ValidPartList)));
             to_sort
+        }
+        fn smart_title(sortable_title : &str) -> String{
+            let split_meta : &str = "==";
+            let smart_title = sortable_title.split(split_meta).last().expect(&getExpected(PlainTextString));
+            smart_title.trim().split(' ').filter(|s| !s.is_empty()).join(" ")
         }
     }
     //        fn is_a_new_part(&mut self, unsorted_title: &str) -> bool {

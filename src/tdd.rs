@@ -147,14 +147,21 @@ mod tests {
        assert_eq!(new_book.part_list[3].title.display_by, "the tricky Fourth Part");
     }
 
-    // #[test]
-    // fn book_part_titles_smart_human_defaults(){
-    //     let mut new_book = Book::new();
-    //     let mut new_part1 = Part::new();
-    //     new_part1.title.sort_by = "0A0B-- Part 1 - the First Part".into();
-    //     new_part1.title.display_by = Book::smart_title(new_part1.title.sort_by);
-//
-    //     new_book.part_list.push(new_part1);
-    //     assert_eq!(new_book.part_list[0].title.display_by, "the First Part");
-    // }
+    #[test]
+    fn book_part_titles_smart_human_defaults(){
+        let mut new_book = Book::new();
+        let mut new_part1 = Part::new();
+        let mut new_part2 = Part::new();
+        new_part2.title.sort_by = "0A0B== Part 1 - the First Part".into();
+        new_part2.title.display_by = Book::smart_title(&new_part2.title.sort_by).into();
+        new_part1.title.sort_by = "0A0C== Part 2 - the Second Part".into();
+        new_part1.title.display_by = Book::smart_title(&new_part1.title.sort_by).into();
+
+        new_book.part_list.push(new_part1);
+        new_book.part_list.push(new_part2);
+        new_book = Book::sort_part_list(new_book);
+
+        assert_eq!(new_book.part_list[0].title.display_by, "Part 1 - the First Part");
+        assert_eq!(new_book.part_list[1].title.display_by, "Part 2 - the Second Part");
+    }
 } // mod tests
