@@ -8,7 +8,7 @@ pub mod List {
         pub fn new() -> Self {
             Self {
                 sort_by: "001 - The Title".into(),
-                display: "The Title".into(),
+                display_by: "The Title".into(),
             }
         }
     }

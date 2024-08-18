@@ -4,7 +4,7 @@ pub mod List {
     #[derive(Clone, PartialEq)]
     pub struct Title {
         pub sort_by: String,
-        pub display: String,
+        pub display_by: String,
     }
 
   //  #[derive(Clone)]
