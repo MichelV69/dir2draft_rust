@@ -14,8 +14,8 @@ use walkdir::WalkDir;
 mod error_handling;
 mod implementations;
 mod structs;
-mod traits;
 mod tdd;
+mod traits;
 
 use crate::error_handling::*;
 use crate::implementations::List::*;
@@ -29,10 +29,10 @@ fn main() {
     let output_file = "my_book_title";
 
     // ---- main code
- //   let mut project = Book::new();
- //   let mut write_ptr =
- //       File::create(format!("{}.md", output_file))
- //       .expect(&getErr(appErrors::noVaildPath));
+    //   let mut project = Book::new();
+    //   let mut write_ptr =
+    //       File::create(format!("{}.md", output_file))
+    //       .expect(&getErr(appErrors::noVaildPath));
 
     for entry in WalkDir::new(content_path)
         .follow_links(true)
@@ -47,22 +47,22 @@ fn main() {
 
         let path_elemets: Vec<_> = full_path.split("/").collect();
 
-    //    if path_elemets.len() == 3 {
-    //        let found_part = path_elemets[0];
-    //        let found_chapter = path_elemets[1];
+        //    if path_elemets.len() == 3 {
+        //        let found_part = path_elemets[0];
+        //        let found_chapter = path_elemets[1];
 
-  //          if project.is_a_new_part(found_part) {
-  //              let new_part = Part::new();
-  //              new_part.title.sort_by = found_part.to_string();
-  //              project.part_list.push(new_part);
-  //          }
+        //          if project.is_a_new_part(found_part) {
+        //              let new_part = Part::new();
+        //              new_part.title.sort_by = found_part.to_string();
+        //              project.part_list.push(new_part);
+        //          }
 
- //          let mut current_part = project.for_part(found_part);
- //          if current_part.is_a_new_chapter(found_chapter) {
- //              let new_chapter = Chapter::new();
- //              new_chapter.title.sort_by = found_chapter;
- //              current_part.part_list.push(new_chapter);
- //          }
-    //    }
+        //          let mut current_part = project.for_part(found_part);
+        //          if current_part.is_a_new_chapter(found_chapter) {
+        //              let new_chapter = Chapter::new();
+        //              new_chapter.title.sort_by = found_chapter;
+        //              current_part.part_list.push(new_chapter);
+        //          }
+        //    }
     }
 }

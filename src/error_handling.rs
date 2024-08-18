@@ -6,7 +6,7 @@ pub enum AppErrors {
     NoSuchPart,
 }
 
-pub fn getErr(inc_err : AppErrors) -> String {
+pub fn getErr(inc_err: AppErrors) -> String {
     let user_friendly = match inc_err {
         AppErrors::IAmAlright => "OK01 - Not An Error.",
         AppErrors::NoVaildPath => "ER01 - Expect valid path",
