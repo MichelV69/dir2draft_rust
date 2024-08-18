@@ -104,10 +104,57 @@ mod tests {
         new_book.part_list.push(new_part1);
         new_book.part_list.push(new_part2);
         new_book.part_list.push(new_part3);
+
         assert_eq!(new_book.part_list[0].title.sort_by, "001 - the First Part");
         assert_eq!(new_book.part_list[1].title.sort_by, "002 - the Second Part");
         assert_eq!(new_book.part_list[2].title.sort_by, "003 - the tricky Third Part");
     }
 
+    #[test]
+    fn book_must_sort_parts(){
+        let mut new_book = Book::new();
+        let mut new_part1 = Part::new();
+        let mut new_part2 = Part::new();
+        let mut new_part3 = Part::new();
+        let mut new_part4 = Part::new();
 
+        new_part2.title.sort_by = "001".into();
+        new_part2.title.display_by = "the First Part".into();
+        new_part3.title.sort_by = "002".into();
+        new_part3.title.display_by = "the Second Part".into();
+        new_part4.title.sort_by = "003a".into();
+        new_part4.title.display_by = "the tricky Third Part".into();
+        new_part1.title.sort_by = "003b".into();
+        new_part1.title.display_by = "the tricky Fourth Part".into();
+
+        new_book.part_list.push(new_part1);
+        new_book.part_list.push(new_part2);
+        new_book.part_list.push(new_part3);
+        new_book.part_list.push(new_part4);
+
+        new_book = Book::sort_part_list(new_book);
+
+       assert_eq!(new_book.part_list[0].title.sort_by, "001");
+       assert_eq!(new_book.part_list[0].title.display_by, "the First Part");
+
+       assert_eq!(new_book.part_list[1].title.sort_by, "002");
+       assert_eq!(new_book.part_list[1].title.display_by, "the Second Part");
+
+       assert_eq!(new_book.part_list[2].title.sort_by, "003a");
+       assert_eq!(new_book.part_list[2].title.display_by, "the tricky Third Part");
+
+       assert_eq!(new_book.part_list[3].title.sort_by, "003b");
+       assert_eq!(new_book.part_list[3].title.display_by, "the tricky Fourth Part");
+    }
+
+    // #[test]
+    // fn book_part_titles_smart_human_defaults(){
+    //     let mut new_book = Book::new();
+    //     let mut new_part1 = Part::new();
+    //     new_part1.title.sort_by = "0A0B-- Part 1 - the First Part".into();
+    //     new_part1.title.display_by = Book::smart_title(new_part1.title.sort_by);
+//
+    //     new_book.part_list.push(new_part1);
+    //     assert_eq!(new_book.part_list[0].title.display_by, "the First Part");
+    // }
 } // mod tests

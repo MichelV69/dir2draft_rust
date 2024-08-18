@@ -18,6 +18,7 @@ mod tdd;
 mod traits;
 
 use crate::error_handling::*;
+use crate::error_handling::AppErrors::*;
 use crate::implementations::List::*;
 use crate::structs::List::*;
 use crate::traits::List::*;
@@ -42,7 +43,7 @@ fn main() {
         let full_path = entry
             .path()
             .strip_prefix(content_path)
-            .expect(&getErr(AppErrors::NoVaildPath))
+            .expect(&getExpected(VaildPath))
             .to_string_lossy();
 
         let path_elemets: Vec<_> = full_path.split("/").collect();

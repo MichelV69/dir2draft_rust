@@ -1,6 +1,7 @@
 // --- implementations.rs
 pub mod List {
     use crate::error_handling::*;
+    use crate::error_handling::AppErrors::*;
     use crate::structs::List::*;
     use crate::traits::List::*;
 
@@ -51,7 +52,15 @@ pub mod List {
     //   }
 
 
-    //    impl PartFns for Book {
+    impl PartImpls for Book {
+        fn sort_part_list(book : Self) -> Book {
+            let mut to_sort : Book = book;
+            to_sort.part_list
+                .sort_by(|a, b| a.title.sort_by.partial_cmp(&b.title.sort_by)
+                .expect(&getExpected(ValidPartList)));
+            to_sort
+        }
+    }
     //        fn is_a_new_part(&mut self, unsorted_title: &str) -> bool {
     //            !self.part_list.iter().any(|&i| i.title.sort_by == unsorted_title)
     //        }
@@ -64,7 +73,7 @@ pub mod List {
     //            if Some(found_part).is_some() {Ok(found_part)}
     //            else {Err(noSuchPart)}
     //        }
-    //    }
+
 }
 
 // --- implementations.rs
