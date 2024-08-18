@@ -15,6 +15,7 @@ mod error_handling;
 mod implementations;
 mod structs;
 mod traits;
+mod tdd;
 
 use crate::error_handling::*;
 use crate::implementations::List::*;

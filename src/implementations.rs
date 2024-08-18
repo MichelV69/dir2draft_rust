@@ -7,8 +7,8 @@ pub mod List {
     impl Title {
         pub fn new() -> Self {
             Self {
-                sort_by: "01A".into(),
-                display: "First Title".into(),
+                sort_by: "001 - The Title".into(),
+                display: "The Title".into(),
             }
         }
     }

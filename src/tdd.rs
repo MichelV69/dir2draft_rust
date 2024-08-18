@@ -5,16 +5,26 @@
 // mod traits;
 //
 // use crate::implementations::List::*;
-// use crate::structs::List::*;
-// use crate::traits::List::*;
+//
+
 
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::structs::List::*;
+    use crate::traits::List::*;
 
     #[test]
-    fn make_a_title() {
-        let result: Title = {sort_by = "001", display = "The Title"};
+    fn title_make() {
+        let result: Title = Title {sort_by : "001".into(), display : "The Title".into()};
         assert_eq!(result.sort_by, "001");
     }
-}
+
+    #[test]
+    fn title_new(){
+        let result = Title::new();
+        assert_eq!(result.sort_by, "001 - The Title");
+        assert_eq!(result.display, "The Title");
+    }
+
+} // mod tests
