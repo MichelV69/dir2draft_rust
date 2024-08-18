@@ -17,7 +17,17 @@ pub mod List {
         pub fn new() -> Self {
             Self {
                 title: Title::new(),
-                //                part_list: [].to_vec(),
+                part_list: [].to_vec(),
+            }
+        }
+    }
+
+
+    impl Part {
+        pub fn new() -> Self {
+            Self {
+                title: Title::new(),
+                // chapter_list: [].to_vec(),
             }
         }
     }
@@ -40,14 +50,6 @@ pub mod List {
     //       }
     //   }
 
-    //   impl Part {
-    //       pub fn new() -> Self {
-    //           Self {
-    //               title: Title::new(),
-    //               chapter_list: [].to_vec(),
-    //           }
-    //       }
-    //   }
 
     //    impl PartFns for Book {
     //        fn is_a_new_part(&mut self, unsorted_title: &str) -> bool {

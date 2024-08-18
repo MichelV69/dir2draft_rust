@@ -3,20 +3,24 @@ pub mod List {
     use crate::error_handling::*;
     use crate::structs::List::*;
 
-    trait TitleFns {
+    trait Title {
         fn new() -> Self;
     }
 
-    trait BookFns {
+    trait Book {
         fn new() -> Self;
     }
 
-    //  pub trait PartFns {
+    trait Part {
+        fn new() -> Self;
+    }
+
+    //  pub trait PartImpls {
     //      fn is_a_new_part(&mut self, unsorted_title: &str) -> bool;
     //      fn for_part(&mut self, new_title: &str) -> Result<Option<&Part>, appErrors>;
     //  }
     //
-    //  pub trait ChapterFns {
+    //  pub trait ChapterImpls {
     //      fn is_a_new_chapter(&mut self, unsorted_title: &str) -> bool;
     //      fn for_chapter(&mut self, new_title: &str) -> Result<Option<&Chapter>, appErrors>;
     //  }

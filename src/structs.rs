@@ -10,7 +10,13 @@ pub mod List {
     #[derive(Clone)]
     pub struct Book {
         pub title: Title,
-        //        pub part_list: Vec<Part>,
+        pub part_list: Vec<Part>,
+    }
+
+    #[derive(Clone)]
+    pub struct Part {
+        pub title: Title,
+    //      pub chapter_list: Vec<Chapter>,
     }
 
     // #[derive(Clone)]
@@ -25,11 +31,7 @@ pub mod List {
     //     pub scene_list: Vec<Scene>,
     // }
 
-    //  #[derive(Clone)]
-    //  pub struct Part {
-    //      pub title: Title,
-    //      pub chapter_list: Vec<Chapter>,
-    //  }
+
 }
 
 // --- structs.rs
