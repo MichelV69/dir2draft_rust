@@ -17,8 +17,8 @@ mod structs;
 mod tdd;
 mod traits;
 
-use crate::error_handling::*;
 use crate::error_handling::AppErrors::*;
+use crate::error_handling::*;
 use crate::implementations::List::*;
 use crate::structs::List::*;
 use crate::traits::List::*;

@@ -20,15 +20,15 @@ pub mod List {
     }
 
     pub trait BookImpls {
-     fn sort_part_list(book : Self) -> Self;
+        fn sort_part_list(book: Self) -> Self;
     }
 
     pub trait PartImpls {
-     fn smart_title(sortable_title : &str) -> String;
+        fn smart_title(sortable_title: &str) -> String;
     }
 
     pub trait ChapterImpls {
-        fn smart_title(sortable_title : &str) -> String;
+        fn smart_title(sortable_title: &str) -> String;
     }
 
     // fn is_a_new_part(&mut self, unsorted_title: &str) -> bool;
