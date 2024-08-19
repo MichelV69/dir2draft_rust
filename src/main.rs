@@ -55,15 +55,31 @@ fn main() {
         //          if project.is_a_new_part(found_part) {
         //              let new_part = Part::new();
         //              new_part.title.sort_by = found_part.to_string();
+            // -- set the reader-friendly title for the part
         //              project.part_list.push(new_part);
+
         //          }
 
         //          let mut current_part = project.for_part(found_part);
         //          if current_part.is_a_new_chapter(found_chapter) {
         //              let new_chapter = Chapter::new();
         //              new_chapter.title.sort_by = found_chapter;
+            // -- set the reader-friendly title for the chapter
         //              current_part.part_list.push(new_chapter);
         //          }
         //    }
+
+
+        // --- writitng to disk
+        // --- --- sort part List
+        // --- --- loop part List
+        // --- --- --- sort chapter List
+        // --- --- --- loop chapter List
+        // --- --- --- --- sort scene List
+        // --- --- --- --- loop scene List
+        // --- --- --- --- first_time print_part_title
+        // --- --- --- --- first_time print_chapter_title
+        // --- --- --- --- print scene_title
+        // --- --- --- --- print scene_text
     }
 }
