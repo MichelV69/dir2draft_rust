@@ -77,6 +77,18 @@ pub mod List {
                 .filter(|s| !s.is_empty())
                 .join(" ")
         }
+
+fn sort_chapter_list(part: Self) -> Self {
+            let mut to_sort: Part = part;
+            to_sort.chapter_list.sort_by(|a, b| {
+                a.title
+                    .sort_by
+                    .partial_cmp(&b.title.sort_by)
+                    .expect(&getExpected(ValidChapterList))
+            });
+            to_sort
+}
+
     }
 
     impl ChapterImpls for Chapter {

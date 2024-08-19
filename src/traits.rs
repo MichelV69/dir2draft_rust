@@ -25,6 +25,7 @@ pub mod List {
 
     pub trait PartImpls {
         fn smart_title(sortable_title: &str) -> String;
+        fn sort_chapter_list(part: Self) -> Self;
     }
 
     pub trait ChapterImpls {

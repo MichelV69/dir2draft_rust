@@ -185,4 +185,45 @@ mod test_driven_design {
             "Chapter 1 - the First Chapter"
         );
     }
+
+#[test]
+fn book_parts_must_sort_chapters() {
+
+        let mut new_book = Book::new();
+        let mut new_part1 = Part::new();
+        let mut new_chapter1 = Chapter::new();
+        let mut new_chapter2 = Chapter::new();
+        let mut new_chapter3 = Chapter::new();
+
+        new_part1.title.sort_by = "0A0B== Part 1 - the First Part".into();
+        new_part1.title.display_by = Part::smart_title(&new_part1.title.sort_by).into();
+
+        new_chapter3.title.sort_by = "01-AA== Chapter 1 - the First Chapter".into();
+        new_chapter3.title.display_by = Chapter::smart_title(&new_chapter3.title.sort_by).into();
+
+        new_chapter1.title.sort_by = "01-AB== Chapter 2 - the Second Chapter".into();
+        new_chapter1.title.display_by = Chapter::smart_title(&new_chapter1.title.sort_by).into();
+
+        new_chapter2.title.sort_by = "03-AA== Chapter 3 - the Third Chapter".into();
+        new_chapter2.title.display_by = Chapter::smart_title(&new_chapter2.title.sort_by).into();
+
+        new_part1.chapter_list.push(new_chapter1);
+        new_part1.chapter_list.push(new_chapter2);
+        new_part1.chapter_list.push(new_chapter3);
+
+        new_part1 = Part::sort_chapter_list(new_part1);
+        new_book.part_list.push(new_part1);
+
+        assert_eq!(new_book.part_list.first().expect(&getExpected(AppErrors::ValidPartList))
+            .chapter_list.first().expect(&getExpected(AppErrors::ValidChapterList))
+            .title.display_by
+            , "Chapter 1 - the First Chapter");
+
+        assert_eq!(new_book.part_list.first().expect(&getExpected(AppErrors::ValidPartList))
+            .chapter_list.last().expect(&getExpected(AppErrors::ValidChapterList))
+            .title.display_by
+            , "Chapter 3 - the Third Chapter");
+
+}
+
 } // mod tests
