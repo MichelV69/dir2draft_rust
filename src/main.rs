@@ -55,7 +55,7 @@ fn main() {
         //          if project.is_a_new_part(found_part) {
         //              let new_part = Part::new();
         //              new_part.title.sort_by = found_part.to_string();
-            // -- set the reader-friendly title for the part
+        // -- set the reader-friendly title for the part
         //              project.part_list.push(new_part);
 
         //          }
@@ -64,11 +64,10 @@ fn main() {
         //          if current_part.is_a_new_chapter(found_chapter) {
         //              let new_chapter = Chapter::new();
         //              new_chapter.title.sort_by = found_chapter;
-            // -- set the reader-friendly title for the chapter
+        // -- set the reader-friendly title for the chapter
         //              current_part.part_list.push(new_chapter);
         //          }
         //    }
-
 
         // --- writitng to disk
         // --- --- sort part List

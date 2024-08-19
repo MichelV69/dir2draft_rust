@@ -78,7 +78,7 @@ pub mod List {
                 .join(" ")
         }
 
-fn sort_chapter_list(part: Self) -> Self {
+        fn sort_chapter_list(part: Self) -> Self {
             let mut to_sort: Part = part;
             to_sort.chapter_list.sort_by(|a, b| {
                 a.title
@@ -87,8 +87,7 @@ fn sort_chapter_list(part: Self) -> Self {
                     .expect(&getExpected(ValidChapterList))
             });
             to_sort
-}
-
+        }
     }
 
     impl ChapterImpls for Chapter {
