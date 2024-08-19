@@ -22,14 +22,14 @@ pub mod List {
     #[derive(Clone)]
     pub struct Chapter {
         pub title: Title,
-        //     pub scene_list: Vec<Scene>,
+        pub scene_list: Vec<Scene>,
     }
 
-    // #[derive(Clone)]
-    // pub struct Scene {
-    //     pub title: Title,
-    //     pub content: String,
-    // }
+    #[derive(Clone)]
+    pub struct Scene {
+        pub title: Title,
+        pub content: String,
+    }
 }
 
 // --- structs.rs

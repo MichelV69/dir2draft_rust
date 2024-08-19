@@ -19,6 +19,10 @@ pub mod List {
         fn new() -> Self;
     }
 
+    trait Scene {
+        fn new() -> Self;
+    }
+
     pub trait BookImpls {
         fn sort_part_list(book: Self) -> Self;
     }
@@ -29,6 +33,10 @@ pub mod List {
     }
 
     pub trait ChapterImpls {
+        fn smart_title(sortable_title: &str) -> String;
+    }
+
+    pub trait SceneImpls {
         fn smart_title(sortable_title: &str) -> String;
     }
 

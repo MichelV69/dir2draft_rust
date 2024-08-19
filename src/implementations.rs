@@ -37,19 +37,26 @@ pub mod List {
         pub fn new() -> Self {
             Self {
                 title: Title::new(),
-                //          scene_list: [].to_vec(),
+                scene_list: [].to_vec(),
             }
         }
     }
 
-    //   impl Scene {
-    //       pub fn new() -> Self {
-    //           Self {
-    //               title: Title::new(),
-    //               content: "New Scene".into(),
-    //           }
-    //       }
-    //   }
+    impl Scene {
+        pub fn new() -> Self {
+            Self {
+                title: Title::new(),
+                content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
+                    nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
+                    reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+                    pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+                    culpa qui officia deserunt mollit anim id est laborum."
+                    .into(),
+            }
+        }
+    }
 
     impl BookImpls for Book {
         fn sort_part_list(book: Self) -> Book {
@@ -91,6 +98,21 @@ pub mod List {
     }
 
     impl ChapterImpls for Chapter {
+        fn smart_title(sortable_title: &str) -> String {
+            let split_meta: &str = "==";
+            let smart_title = sortable_title
+                .split(split_meta)
+                .last()
+                .expect(&getExpected(PlainTextString));
+            smart_title
+                .trim()
+                .split(' ')
+                .filter(|s| !s.is_empty())
+                .join(" ")
+        }
+    }
+
+    impl SceneImpls for Scene {
         fn smart_title(sortable_title: &str) -> String {
             let split_meta: &str = "==";
             let smart_title = sortable_title

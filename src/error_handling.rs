@@ -5,6 +5,7 @@ pub enum AppErrors {
     VaildPath,
     ValidPartList,
     ValidChapterList,
+    ValidSceneList,
     PlainTextString,
 }
 
@@ -15,6 +16,7 @@ pub fn getExpected(inc_err: AppErrors) -> String {
         AppErrors::ValidPartList => "ER02 - Expected valid list of Book Parts",
         AppErrors::PlainTextString => "ER03 - Expected title to be Plain Text",
         AppErrors::ValidChapterList => "ER04 - Expected valid list of Chapters",
+        AppErrors::ValidSceneList => "ER05 - Expected valid list of Scenes",
         _ => "ER13 - Generic Error - Write Better Code",
     };
 

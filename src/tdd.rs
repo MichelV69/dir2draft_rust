@@ -239,4 +239,57 @@ mod test_driven_design {
             "Chapter 3 - the Third Chapter"
         );
     }
+
+    #[test]
+    fn chapters_must_have_scenes_with_smart_human_titles() {
+        let mut new_book = Book::new();
+        let mut new_part1 = Part::new();
+        let mut new_chapter1 = Chapter::new();
+        let mut new_scene1 = Scene::new();
+
+        new_part1.title.sort_by = "0A0B== Part 1 - the First Part".into();
+        new_part1.title.display_by = Part::smart_title(&new_part1.title.sort_by).into();
+
+        new_chapter1.title.sort_by = "01-AA== Chapter 1 - the First Chapter".into();
+        new_chapter1.title.display_by = Chapter::smart_title(&new_chapter1.title.sort_by).into();
+
+        new_scene1.title.sort_by = "01-AA== The Big First Scene".into();
+        new_scene1.title.display_by = Scene::smart_title(&new_scene1.title.sort_by).into();
+
+        new_chapter1.scene_list.push(new_scene1);
+        new_part1.chapter_list.push(new_chapter1);
+        new_book.part_list.push(new_part1);
+
+        assert_eq!(
+            new_book
+                .part_list
+                .first()
+                .expect(&getExpected(AppErrors::ValidPartList))
+                .chapter_list
+                .first()
+                .expect(&getExpected(AppErrors::ValidChapterList))
+                .scene_list
+                .first()
+                .expect(&getExpected(AppErrors::ValidSceneList))
+                .title
+                .sort_by,
+            "01-AA== The Big First Scene"
+        );
+
+        assert_eq!(
+            new_book
+                .part_list
+                .first()
+                .expect(&getExpected(AppErrors::ValidPartList))
+                .chapter_list
+                .first()
+                .expect(&getExpected(AppErrors::ValidChapterList))
+                .scene_list
+                .first()
+                .expect(&getExpected(AppErrors::ValidSceneList))
+                .title
+                .display_by,
+            "The Big First Scene"
+        );
+    }
 } // mod tests
