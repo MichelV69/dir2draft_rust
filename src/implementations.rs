@@ -29,10 +29,19 @@ pub mod List {
         pub fn new() -> Self {
             Self {
                 title: Title::new(),
-                // chapter_list: [].to_vec(),
+                chapter_list: [].to_vec(),
             }
         }
     }
+
+      impl Chapter {
+          pub fn new() -> Self {
+              Self {
+                  title: Title::new(),
+        //          scene_list: [].to_vec(),
+              }
+          }
+      }
 
     //   impl Scene {
     //       pub fn new() -> Self {
@@ -43,17 +52,7 @@ pub mod List {
     //       }
     //   }
 
-    //   impl Chapter {
-    //       pub fn new() -> Self {
-    //           Self {
-    //               title: Title::new(),
-    //               scene_list: [].to_vec(),
-    //           }
-    //       }
-    //   }
-
-
-    impl PartImpls for Book {
+    impl BookImpls for Book {
         fn sort_part_list(book : Self) -> Book {
             let mut to_sort : Book = book;
             to_sort.part_list
@@ -61,12 +60,25 @@ pub mod List {
                 .expect(&getExpected(ValidPartList)));
             to_sort
         }
+
+    }
+
+    impl PartImpls for Part {
         fn smart_title(sortable_title : &str) -> String{
             let split_meta : &str = "==";
             let smart_title = sortable_title.split(split_meta).last().expect(&getExpected(PlainTextString));
             smart_title.trim().split(' ').filter(|s| !s.is_empty()).join(" ")
         }
     }
+
+    impl ChapterImpls for Chapter {
+        fn smart_title(sortable_title : &str) -> String{
+            let split_meta : &str = "==";
+            let smart_title = sortable_title.split(split_meta).last().expect(&getExpected(PlainTextString));
+            smart_title.trim().split(' ').filter(|s| !s.is_empty()).join(" ")
+        }
+    }
+
     //        fn is_a_new_part(&mut self, unsorted_title: &str) -> bool {
     //            !self.part_list.iter().any(|&i| i.title.sort_by == unsorted_title)
     //        }

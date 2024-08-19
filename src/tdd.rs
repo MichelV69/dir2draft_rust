@@ -8,8 +8,9 @@
 //
 
 #[cfg(test)]
-mod tests {
+mod test_driven_design {
     use super::*;
+    use crate::error_handling::*;
     use crate::structs::List::*;
     use crate::traits::List::*;
 
@@ -59,8 +60,14 @@ mod tests {
                 display_by: "display_by_part2".into(),
             };
 
-        let part1 :Part = Part {title: part1_title};
-        let part2 :Part = Part {title: part2_title};
+        let some_chapter_title = Title {
+                sort_by: "sort_by_some_chapter_title".into(),
+                display_by: "display_by_some_chapter_title".into(),
+            };
+        let some_chapter_data = Chapter {title:some_chapter_title};
+
+        let part1 :Part = Part {title: part1_title, chapter_list: vec![some_chapter_data.clone()]};
+        let part2 :Part = Part {title: part2_title, chapter_list: vec![some_chapter_data]};
 
         let result: Book = Book {
             title: book_title ,
@@ -153,9 +160,9 @@ mod tests {
         let mut new_part1 = Part::new();
         let mut new_part2 = Part::new();
         new_part2.title.sort_by = "0A0B== Part 1 - the First Part".into();
-        new_part2.title.display_by = Book::smart_title(&new_part2.title.sort_by).into();
+        new_part2.title.display_by = Part::smart_title(&new_part2.title.sort_by).into();
         new_part1.title.sort_by = "0A0C== Part 2 - the Second Part".into();
-        new_part1.title.display_by = Book::smart_title(&new_part1.title.sort_by).into();
+        new_part1.title.display_by = Part::smart_title(&new_part1.title.sort_by).into();
 
         new_book.part_list.push(new_part1);
         new_book.part_list.push(new_part2);
@@ -164,4 +171,30 @@ mod tests {
         assert_eq!(new_book.part_list[0].title.display_by, "Part 1 - the First Part");
         assert_eq!(new_book.part_list[1].title.display_by, "Part 2 - the Second Part");
     }
+
+#[test]
+fn book_parts_must_have_chapters_with_smart_human_titles() {
+        let mut new_book = Book::new();
+        let mut new_part1 = Part::new();
+        let mut new_chapter1 = Chapter::new();
+
+        new_part1.title.sort_by = "0A0B== Part 1 - the First Part".into();
+        new_part1.title.display_by = Part::smart_title(&new_part1.title.sort_by).into();
+
+        new_chapter1.title.sort_by="01-AA== Chapter 1 - the First Chapter".into();
+        new_chapter1.title.display_by = Chapter::smart_title(&new_chapter1.title.sort_by).into();
+
+        new_part1.chapter_list.push(new_chapter1);
+        new_book.part_list.push(new_part1);
+
+        assert_eq!(new_book.part_list.first().expect(&getExpected(AppErrors::ValidPartList))
+        .chapter_list.first().expect(&getExpected(AppErrors::ValidChapterList))
+        .title.sort_by, "01-AA== Chapter 1 - the First Chapter");
+
+        assert_eq!(new_book.part_list.first().expect(&getExpected(AppErrors::ValidPartList))
+        .chapter_list.first().expect(&getExpected(AppErrors::ValidChapterList))
+        .title.display_by, "Chapter 1 - the First Chapter");
+
+}
+
 } // mod tests

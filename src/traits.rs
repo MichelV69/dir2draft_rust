@@ -15,12 +15,24 @@ pub mod List {
         fn new() -> Self;
     }
 
-    pub trait PartImpls {
-     fn sort_part_list(book : Self) -> Self;
-     fn smart_title(sortable_title : &str) -> String;
-        // fn is_a_new_part(&mut self, unsorted_title: &str) -> bool;
-        // fn for_part(&mut self, new_title: &str) -> Result<Option<&Part>, appErrors>;
+    trait Chapter {
+        fn new() -> Self;
     }
+
+    pub trait BookImpls {
+     fn sort_part_list(book : Self) -> Self;
+    }
+
+    pub trait PartImpls {
+     fn smart_title(sortable_title : &str) -> String;
+    }
+
+    pub trait ChapterImpls {
+        fn smart_title(sortable_title : &str) -> String;
+    }
+
+    // fn is_a_new_part(&mut self, unsorted_title: &str) -> bool;
+    // fn for_part(&mut self, new_title: &str) -> Result<Option<&Part>, appErrors>;
 
     //    //  pub trait ChapterImpls {
     //      fn is_a_new_chapter(&mut self, unsorted_title: &str) -> bool;
