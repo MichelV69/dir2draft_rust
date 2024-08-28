@@ -5,6 +5,7 @@
 #![allow(unused_mut)]
 #![allow(non_snake_case)]
 
+// ---- need walkdir for directory traversal
 extern crate walkdir;
 use std::fs::File;
 use std::io::Write;
@@ -34,19 +35,6 @@ fn main() {
     //   let mut write_ptr =
     //       File::create(format!("{}.md", output_file))
     //       .expect(&getErr(appErrors::noVaildPath));
-
-    for entry in WalkDir::new(content_path)
-        .follow_links(true)
-        .into_iter()
-        .filter_map(|e| e.ok())
-    {
-        let full_path = entry
-            .path()
-            .strip_prefix(content_path)
-            .expect(&getExpected(VaildPath))
-            .to_string_lossy();
-
-        let path_elemets: Vec<_> = full_path.split("/").collect();
 
         //    if path_elemets.len() == 3 {
         //        let found_part = path_elemets[0];
@@ -80,5 +68,5 @@ fn main() {
         // --- --- --- --- first_time print_chapter_title
         // --- --- --- --- print scene_title
         // --- --- --- --- print scene_text
-    }
+
 }

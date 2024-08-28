@@ -1,7 +1,12 @@
 // --- traits.rs
 pub mod List {
+    use std::borrow::Cow;
     use crate::error_handling::*;
     use crate::structs::List::*;
+
+        trait App {
+        fn new() -> Self;
+    }
 
     trait Title {
         fn new() -> Self;
@@ -25,6 +30,10 @@ pub mod List {
 
     pub trait BookImpls {
         fn sort_part_list(book: Self) -> Self;
+    }
+
+    pub trait AppImpls {
+        fn get_path_elements<'a>(content_path: &'a String) -> Vec<String>;
     }
 
     pub trait PartImpls {

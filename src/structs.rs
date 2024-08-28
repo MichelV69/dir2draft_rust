@@ -1,6 +1,11 @@
 // --- structs.rs
 pub mod List {
 
+    pub struct App {
+        pub content_path: String,
+        pub output_file: String,
+    }
+
     #[derive(Clone, PartialEq)]
     pub struct Title {
         pub sort_by: String,

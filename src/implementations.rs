@@ -1,10 +1,28 @@
 // --- implementations.rs
 pub mod List {
+    // ---- need walkdir for directory traversal
+    extern crate walkdir;
+    use std::fs::File;
+    use std::io::Write;
+    use walkdir::WalkDir;
+    // ----- iteration management
+    use std::path::Path;
+    use itertools::Itertools;
+
+    // -- other stuff
     use crate::error_handling::AppErrors::*;
     use crate::error_handling::*;
     use crate::structs::List::*;
     use crate::traits::List::*;
-    use itertools::Itertools;
+
+    impl App {
+        pub fn new() -> Self {
+            Self {
+                content_path: "~".into(),
+                output_file: "dir2draft.manuscript".into(),
+            }
+        }
+    }
 
     impl Title {
         pub fn new() -> Self {
@@ -55,6 +73,41 @@ pub mod List {
                     culpa qui officia deserunt mollit anim id est laborum."
                     .into(),
             }
+        }
+    }
+
+    impl AppImpls for App {
+        fn get_path_elements<'a>(content_path: &'a String) -> Vec<String>{
+            use walkdir::DirEntry;
+            // ---
+            fn do_strip_prefix(this_content_path: String, this_path: DirEntry) -> String {
+                this_path.path()
+                    .strip_prefix(this_content_path)
+                    .expect(&getExpected(VaildPath))
+                    .to_str()
+                    .expect(&getExpected(PlainTextString))
+                    .to_string()
+            }
+
+            // ----
+            let mut path_elements: Vec<String> = vec![];
+            for entry in WalkDir::new(content_path.clone())
+                .follow_links(true)
+                .into_iter()
+                .filter_map(|e| e.ok())
+            {
+                let txt_buffer: String = do_strip_prefix(content_path.clone(), entry);
+
+                let vec_buffer: Vec<&str> = txt_buffer.split("/").collect();
+
+                for di in vec_buffer {
+                    let new_path_string = di.to_string();
+                    if ! path_elements.contains(&new_path_string) && new_path_string.len() > 0 {
+                        path_elements.push(new_path_string);
+                    }
+                }
+            }
+            path_elements
         }
     }
 

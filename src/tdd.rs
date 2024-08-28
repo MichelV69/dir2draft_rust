@@ -1,14 +1,12 @@
-// ---- modules
-// mod error_handling;
-// mod implementations;
-// mod structs;
-// mod traits;
-//
-// use crate::implementations::List::*;
-//
-
+// ---- test_driven_design
 #[cfg(test)]
 mod test_driven_design {
+// ---- need walkdir for directory traversal
+    extern crate walkdir;
+    use std::fs::File;
+    use std::io::Write;
+    use walkdir::WalkDir;
+
     use super::*;
     use crate::error_handling::*;
     use crate::structs::List::*;
@@ -291,5 +289,16 @@ mod test_driven_design {
                 .display_by,
             "The Big First Scene"
         );
+    }
+
+    #[test]
+    fn app_can_open_path_and_read_structure() {
+        let mut my_app = App::new();
+        my_app.content_path= "./content".into();
+        my_app.output_file="my_book_title".into();
+
+        let my_path_elements = App::get_path_elements(&my_app.content_path.into());
+        println!("{:#?}",my_path_elements);
+        assert_eq!(13,my_path_elements.len())
     }
 } // mod tests
