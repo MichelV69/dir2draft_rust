@@ -17,7 +17,9 @@ pub mod List {
     }
 
     trait Part {
-        fn new() -> Self where Self: Sized;
+        fn new() -> Self
+        where
+            Self: Sized;
     }
 
     trait Chapter {

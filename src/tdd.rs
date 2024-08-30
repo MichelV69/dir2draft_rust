@@ -315,53 +315,61 @@ mod test_driven_design {
         let mut chapter_index: usize = 0;
 
         for dir_entry in &my_path_elements {
-
-            if this_book.part_list.len() == 0
-                && !dir_entry.contains(".md") {
+            if this_book.part_list.len() == 0 && !dir_entry.contains(".md") {
                 let mut to_add = Part::new();
                 to_add.title.sort_by = dir_entry.clone();
                 to_add.title.display_by = Part::smart_title(&to_add.title.sort_by).into();
                 println!("Part: {:#?}", &dir_entry);
                 this_book.part_list.push(to_add);
-                part_index = this_book.part_list.len() -1;
+                part_index = this_book.part_list.len() - 1;
             }
 
             if this_book.part_list.len() > 0
                 && this_book.part_list[part_index].chapter_list.len() == 0
-                && !dir_entry.contains(".md") {
+                && !dir_entry.contains(".md")
+            {
                 let mut to_add = Chapter::new();
                 to_add.title.sort_by = dir_entry.clone();
                 to_add.title.display_by = Chapter::smart_title(&to_add.title.sort_by).into();
                 println!("Chapter: {:#?}", &dir_entry);
                 this_book.part_list[part_index].chapter_list.push(to_add);
-                chapter_index = this_book.part_list[part_index].chapter_list.len()-1;
+                chapter_index = this_book.part_list[part_index].chapter_list.len() - 1;
             }
 
             if this_book.part_list.len() > 0
                 && this_book.part_list[part_index].chapter_list.len() > 0
-                && dir_entry.contains(".md") {
-    //            part_index = this_book.find_part(&current_part);
-    //            chapter_index = this_book.part_list[part_index]
-    //                .find_chapter(&current_chapter)
-    //                .expect(&getExpected(AppErrors::ValidPartIndex));
+                && dir_entry.contains(".md")
+            {
+                //            part_index = this_book.find_part(&current_part);
+                //            chapter_index = this_book.part_list[part_index]
+                //                .find_chapter(&current_chapter)
+                //                .expect(&getExpected(AppErrors::ValidPartIndex));
 
                 let mut this_scene = Scene::new();
                 this_scene.title.sort_by = dir_entry.clone();
                 this_scene.title.display_by = Scene::smart_title(&this_scene.title.sort_by).into();
-                this_scene.content = Scene::get_content_for(my_app.content_path.clone(), &dir_entry);
+                this_scene.content =
+                    Scene::get_content_for(my_app.content_path.clone(), &dir_entry);
 
-                this_book.part_list[part_index]
-                    .chapter_list[chapter_index]
-                    .scene_list.push(this_scene);
+                this_book.part_list[part_index].chapter_list[chapter_index]
+                    .scene_list
+                    .push(this_scene);
                 println!("Scene: {:#?}", &dir_entry);
-            }// do we see a File (some_cool_scene.md)?
+            } // do we see a File (some_cool_scene.md)?
 
             // do we see a chapter? ("Ch 1 - Nothing To See, Hear")
 
             // do we see a part? ("Part 1 - Fourteen Weeks Later")
         }
 
-        assert_eq!("Part 1 - Fourteen Weeks Later", this_book.part_list.first().expect(&getExpected(AppErrors::ValidPartList)).title.sort_by);
-
+        assert_eq!(
+            "Part 1 - Fourteen Weeks Later",
+            this_book
+                .part_list
+                .first()
+                .expect(&getExpected(AppErrors::ValidPartList))
+                .title
+                .sort_by
+        );
     }
 } // mod tests

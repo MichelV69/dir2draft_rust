@@ -43,7 +43,10 @@ pub mod List {
     }
 
     impl Part {
-        pub fn new() -> Self where Self: Sized {
+        pub fn new() -> Self
+        where
+            Self: Sized,
+        {
             Self {
                 title: Title::new(),
                 chapter_list: [].to_vec(),
@@ -124,11 +127,15 @@ pub mod List {
             to_sort
         }
         fn find_part(&mut self, search_title: &str) -> Option<usize> {
-            let found_part_index = self.part_list
+            let found_part_index = self
+                .part_list
                 .iter()
                 .position(|i| i.title.sort_by == search_title);
-            if Some(found_part_index).is_some() {found_part_index}
-            else {Some(0)}
+            if Some(found_part_index).is_some() {
+                found_part_index
+            } else {
+                Some(0)
+            }
         }
     }
 
@@ -187,7 +194,6 @@ pub mod List {
                 .join(" ")
         }
         fn get_content_for(content_path: String, dir_entry: &str) -> String {
-
             "got milk".into()
         }
     }
