@@ -298,7 +298,6 @@ mod test_driven_design {
         my_app.output_file = "my_book_title".into();
 
         let my_path_elements = App::get_path_elements(&my_app.content_path.into());
-        println!("{:#?}", my_path_elements);
         assert_eq!(13, my_path_elements.len());
     }
 
@@ -310,31 +309,36 @@ mod test_driven_design {
 
         let mut this_book = Book::new();
 
-        let my_path_elements = App::get_path_elements(&my_app.content_path.clone().into());
+        let my_path_elements = App::get_path_elements(&my_app.content_path.clone());
 
         let mut part_index: usize = 0;
         let mut chapter_index: usize = 0;
 
-        for dir_entry in my_path_elements {
-            if part_index == 0
+        for dir_entry in &my_path_elements {
+
+            if this_book.part_list.len() == 0
                 && !dir_entry.contains(".md") {
                 let mut to_add = Part::new();
                 to_add.title.sort_by = dir_entry.clone();
-                to_add.title.display_by = Scene::smart_title(&to_add.title.sort_by).into();
+                to_add.title.display_by = Part::smart_title(&to_add.title.sort_by).into();
+                println!("Part: {:#?}", &dir_entry);
                 this_book.part_list.push(to_add);
+                part_index = this_book.part_list.len() -1;
             }
 
-            if part_index > 0
-                && chapter_index == 0
+            if this_book.part_list.len() > 0
+                && this_book.part_list[part_index].chapter_list.len() == 0
                 && !dir_entry.contains(".md") {
                 let mut to_add = Chapter::new();
                 to_add.title.sort_by = dir_entry.clone();
-                to_add.title.display_by = Scene::smart_title(&to_add.title.sort_by).into();
+                to_add.title.display_by = Chapter::smart_title(&to_add.title.sort_by).into();
+                println!("Chapter: {:#?}", &dir_entry);
                 this_book.part_list[part_index].chapter_list.push(to_add);
+                chapter_index = this_book.part_list[part_index].chapter_list.len()-1;
             }
 
-            if part_index > 0
-                && chapter_index > 0
+            if this_book.part_list.len() > 0
+                && this_book.part_list[part_index].chapter_list.len() > 0
                 && dir_entry.contains(".md") {
     //            part_index = this_book.find_part(&current_part);
     //            chapter_index = this_book.part_list[part_index]
@@ -349,6 +353,7 @@ mod test_driven_design {
                 this_book.part_list[part_index]
                     .chapter_list[chapter_index]
                     .scene_list.push(this_scene);
+                println!("Scene: {:#?}", &dir_entry);
             }// do we see a File (some_cool_scene.md)?
 
             // do we see a chapter? ("Ch 1 - Nothing To See, Hear")
@@ -356,6 +361,7 @@ mod test_driven_design {
             // do we see a part? ("Part 1 - Fourteen Weeks Later")
         }
 
-        assert_eq!(true, false);
+        assert_eq!("Part 1 - Fourteen Weeks Later", this_book.part_list.first().expect(&getExpected(AppErrors::ValidPartList)).title.sort_by);
+
     }
 } // mod tests
