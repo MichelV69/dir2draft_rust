@@ -6,8 +6,8 @@ pub mod List {
     use std::io::Write;
     use walkdir::WalkDir;
     // ----- iteration management
-    use std::path::Path;
     use itertools::Itertools;
+    use std::path::Path;
 
     // -- other stuff
     use crate::error_handling::AppErrors::*;
@@ -43,7 +43,7 @@ pub mod List {
     }
 
     impl Part {
-        pub fn new() -> Self {
+        pub fn new() -> Self where Self: Sized {
             Self {
                 title: Title::new(),
                 chapter_list: [].to_vec(),
@@ -77,11 +77,12 @@ pub mod List {
     }
 
     impl AppImpls for App {
-        fn get_path_elements<'a>(content_path: &'a String) -> Vec<String>{
+        fn get_path_elements<'a>(content_path: &'a String) -> Vec<String> {
             use walkdir::DirEntry;
             // ---
             fn do_strip_prefix(this_content_path: String, this_path: DirEntry) -> String {
-                this_path.path()
+                this_path
+                    .path()
                     .strip_prefix(this_content_path)
                     .expect(&getExpected(VaildPath))
                     .to_str()
@@ -102,7 +103,7 @@ pub mod List {
 
                 for di in vec_buffer {
                     let new_path_string = di.to_string();
-                    if ! path_elements.contains(&new_path_string) && new_path_string.len() > 0 {
+                    if !path_elements.contains(&new_path_string) && new_path_string.len() > 0 {
                         path_elements.push(new_path_string);
                     }
                 }
@@ -121,6 +122,13 @@ pub mod List {
                     .expect(&getExpected(ValidPartList))
             });
             to_sort
+        }
+        fn find_part(&mut self, search_title: &str) -> Option<usize> {
+            let found_part_index = self.part_list
+                .iter()
+                .position(|i| i.title.sort_by == search_title);
+            if Some(found_part_index).is_some() {found_part_index}
+            else {Some(0)}
         }
     }
 
@@ -178,19 +186,17 @@ pub mod List {
                 .filter(|s| !s.is_empty())
                 .join(" ")
         }
+        fn get_content_for(content_path: String, dir_entry: &str) -> String {
+
+            "got milk".into()
+        }
     }
 
     //        fn is_a_new_part(&mut self, unsorted_title: &str) -> bool {
     //            !self.part_list.iter().any(|&i| i.title.sort_by == unsorted_title)
     //        }
     //
-    //        fn for_part(&mut self, unsorted_title: &str) -> Result<Option<&Part>, appErrors> {
-    //            let found_part = self.part_list
-    //                .iter()
-    //                .find(|&i| i.title.sort_by == unsorted_title);
-    //
-    //            if Some(found_part).is_some() {Ok(found_part)}
-    //            else {Err(noSuchPart)}
+
     //        }
 }
 

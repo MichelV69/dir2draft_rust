@@ -1,10 +1,10 @@
 // --- traits.rs
 pub mod List {
-    use std::borrow::Cow;
     use crate::error_handling::*;
     use crate::structs::List::*;
+    use std::borrow::Cow;
 
-        trait App {
+    trait App {
         fn new() -> Self;
     }
 
@@ -17,7 +17,7 @@ pub mod List {
     }
 
     trait Part {
-        fn new() -> Self;
+        fn new() -> Self where Self: Sized;
     }
 
     trait Chapter {
@@ -30,6 +30,7 @@ pub mod List {
 
     pub trait BookImpls {
         fn sort_part_list(book: Self) -> Self;
+        fn find_part(&mut self, unsorted_title: &str) -> Option<usize>;
     }
 
     pub trait AppImpls {
@@ -47,6 +48,7 @@ pub mod List {
 
     pub trait SceneImpls {
         fn smart_title(sortable_title: &str) -> String;
+        fn get_content_for(content_path: String, dir_entry: &str) -> String;
     }
 
     // fn is_a_new_part(&mut self, unsorted_title: &str) -> bool;

@@ -1,7 +1,7 @@
 // ---- test_driven_design
 #[cfg(test)]
 mod test_driven_design {
-// ---- need walkdir for directory traversal
+    // ---- need walkdir for directory traversal
     extern crate walkdir;
     use std::fs::File;
     use std::io::Write;
@@ -294,11 +294,68 @@ mod test_driven_design {
     #[test]
     fn app_can_open_path_and_read_structure() {
         let mut my_app = App::new();
-        my_app.content_path= "./content".into();
-        my_app.output_file="my_book_title".into();
+        my_app.content_path = "./content".into();
+        my_app.output_file = "my_book_title".into();
 
         let my_path_elements = App::get_path_elements(&my_app.content_path.into());
-        println!("{:#?}",my_path_elements);
-        assert_eq!(13,my_path_elements.len())
+        println!("{:#?}", my_path_elements);
+        assert_eq!(13, my_path_elements.len());
+    }
+
+    #[test]
+    fn app_can_load_path_structure_into_book_structure() {
+        let mut my_app = App::new();
+        my_app.content_path = "./content".into();
+        my_app.output_file = "my_book_title".into();
+
+        let mut this_book = Book::new();
+
+        let my_path_elements = App::get_path_elements(&my_app.content_path.clone().into());
+
+        let mut part_index: usize = 0;
+        let mut chapter_index: usize = 0;
+
+        for dir_entry in my_path_elements {
+            if part_index == 0
+                && !dir_entry.contains(".md") {
+                let mut to_add = Part::new();
+                to_add.title.sort_by = dir_entry.clone();
+                to_add.title.display_by = Scene::smart_title(&to_add.title.sort_by).into();
+                this_book.part_list.push(to_add);
+            }
+
+            if part_index > 0
+                && chapter_index == 0
+                && !dir_entry.contains(".md") {
+                let mut to_add = Chapter::new();
+                to_add.title.sort_by = dir_entry.clone();
+                to_add.title.display_by = Scene::smart_title(&to_add.title.sort_by).into();
+                this_book.part_list[part_index].chapter_list.push(to_add);
+            }
+
+            if part_index > 0
+                && chapter_index > 0
+                && dir_entry.contains(".md") {
+    //            part_index = this_book.find_part(&current_part);
+    //            chapter_index = this_book.part_list[part_index]
+    //                .find_chapter(&current_chapter)
+    //                .expect(&getExpected(AppErrors::ValidPartIndex));
+
+                let mut this_scene = Scene::new();
+                this_scene.title.sort_by = dir_entry.clone();
+                this_scene.title.display_by = Scene::smart_title(&this_scene.title.sort_by).into();
+                this_scene.content = Scene::get_content_for(my_app.content_path.clone(), &dir_entry);
+
+                this_book.part_list[part_index]
+                    .chapter_list[chapter_index]
+                    .scene_list.push(this_scene);
+            }// do we see a File (some_cool_scene.md)?
+
+            // do we see a chapter? ("Ch 1 - Nothing To See, Hear")
+
+            // do we see a part? ("Part 1 - Fourteen Weeks Later")
+        }
+
+        assert_eq!(true, false);
     }
 } // mod tests

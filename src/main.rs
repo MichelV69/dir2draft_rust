@@ -36,37 +36,36 @@ fn main() {
     //       File::create(format!("{}.md", output_file))
     //       .expect(&getErr(appErrors::noVaildPath));
 
-        //    if path_elemets.len() == 3 {
-        //        let found_part = path_elemets[0];
-        //        let found_chapter = path_elemets[1];
+    //    if path_elemets.len() == 3 {
+    //        let found_part = path_elemets[0];
+    //        let found_chapter = path_elemets[1];
 
-        //          if project.is_a_new_part(found_part) {
-        //              let new_part = Part::new();
-        //              new_part.title.sort_by = found_part.to_string();
-        // -- set the reader-friendly title for the part
-        //              project.part_list.push(new_part);
+    //          if project.is_a_new_part(found_part) {
+    //              let new_part = Part::new();
+    //              new_part.title.sort_by = found_part.to_string();
+    // -- set the reader-friendly title for the part
+    //              project.part_list.push(new_part);
 
-        //          }
+    //          }
 
-        //          let mut current_part = project.for_part(found_part);
-        //          if current_part.is_a_new_chapter(found_chapter) {
-        //              let new_chapter = Chapter::new();
-        //              new_chapter.title.sort_by = found_chapter;
-        // -- set the reader-friendly title for the chapter
-        //              current_part.part_list.push(new_chapter);
-        //          }
-        //    }
+    //          let mut current_part = project.for_part(found_part);
+    //          if current_part.is_a_new_chapter(found_chapter) {
+    //              let new_chapter = Chapter::new();
+    //              new_chapter.title.sort_by = found_chapter;
+    // -- set the reader-friendly title for the chapter
+    //              current_part.part_list.push(new_chapter);
+    //          }
+    //    }
 
-        // --- writitng to disk
-        // --- --- sort part List
-        // --- --- loop part List
-        // --- --- --- sort chapter List
-        // --- --- --- loop chapter List
-        // --- --- --- --- sort scene List
-        // --- --- --- --- loop scene List
-        // --- --- --- --- first_time print_part_title
-        // --- --- --- --- first_time print_chapter_title
-        // --- --- --- --- print scene_title
-        // --- --- --- --- print scene_text
-
+    // --- writitng to disk
+    // --- --- sort part List
+    // --- --- loop part List
+    // --- --- --- sort chapter List
+    // --- --- --- loop chapter List
+    // --- --- --- --- sort scene List
+    // --- --- --- --- loop scene List
+    // --- --- --- --- first_time print_part_title
+    // --- --- --- --- first_time print_chapter_title
+    // --- --- --- --- print scene_title
+    // --- --- --- --- print scene_text
 }
