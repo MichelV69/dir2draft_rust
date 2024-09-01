@@ -9,6 +9,7 @@ pub enum AppErrors {
     ValidSceneList,
     ValidPartIndex,
     ReadableFile,
+    CannotWriteToFile,
     PlainTextString,
 }
 
@@ -23,6 +24,9 @@ impl fmt::Display for AppErrors {
             AppErrors::ValidSceneList => write!(f, "ER05 - Expected valid list of Scenes"),
             AppErrors::ValidPartIndex => write!(f, "ER06 - That Part of the Book cannot be found"),
             AppErrors::ReadableFile => write!(f, "ER07 - Should have been able to read the file"),
+            AppErrors::CannotWriteToFile => {
+                write!(f, "ER08 - Should have been able to write to the file")
+            }
             _ => write!(f, "ER13 - Generic Error - Write Better Code"),
         }
     }

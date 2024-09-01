@@ -242,20 +242,29 @@ pub mod List {
                 .filter(|s| !s.is_empty())
                 .join(" ")
         }
+
+        fn sort_scene_list(chapter: Self) -> Self {
+            let mut to_sort: Chapter = chapter;
+            to_sort.scene_list.sort_by(|a, b| {
+                a.title
+                    .sort_by
+                    .partial_cmp(&b.title.sort_by)
+                    .expect(&format!("{}", ValidSceneList))
+            });
+            to_sort
+        }
     }
 
     impl SceneImpls for Scene {
         fn smart_title(sortable_title: &str) -> String {
             let split_meta: &str = "==";
-            let smart_title = sortable_title
+            let ftype: &str = ".md";
+            let buffer = sortable_title
                 .split(split_meta)
                 .last()
                 .expect(&format!("{}", PlainTextString));
-            smart_title
-                .trim()
-                .split(' ')
-                .filter(|s| !s.is_empty())
-                .join(" ")
+            let smart_title: String = buffer.split(' ').filter(|s| !s.is_empty()).join(" ");
+            smart_title.replace(ftype, "")
         }
         fn get_content_for(content_path: String, dir_entry: &str) -> Option<String> {
             use std::env;

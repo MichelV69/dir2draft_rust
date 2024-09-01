@@ -50,6 +50,7 @@ pub mod List {
 
     pub trait ChapterImpls {
         fn smart_title(sortable_title: &str) -> String;
+        fn sort_scene_list(chapter: Self) -> Self;
     }
 
     pub trait SceneImpls {

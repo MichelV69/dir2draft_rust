@@ -251,7 +251,7 @@ mod test_driven_design {
         new_chapter1.title.sort_by = "01-AA== Chapter 1 - the First Chapter".into();
         new_chapter1.title.display_by = Chapter::smart_title(&new_chapter1.title.sort_by).into();
 
-        new_scene1.title.sort_by = "01-AA== The Big First Scene".into();
+        new_scene1.title.sort_by = "01-AA== The Big First Scene.md".into();
         new_scene1.title.display_by = Scene::smart_title(&new_scene1.title.sort_by).into();
 
         new_chapter1.scene_list.push(new_scene1);
@@ -271,7 +271,7 @@ mod test_driven_design {
                 .expect(&format!("{}", AppErrors::ValidSceneList))
                 .title
                 .sort_by,
-            "01-AA== The Big First Scene"
+            "01-AA== The Big First Scene.md"
         );
 
         assert_eq!(
@@ -291,6 +291,42 @@ mod test_driven_design {
         );
     }
 
+    fn chapters_must_sort_scenes() {
+        let mut new_chapter1 = Chapter::new();
+        let mut new_scene1 = Scene::new();
+        let mut new_scene2 = Scene::new();
+        let mut new_scene3 = Scene::new();
+
+        new_chapter1.title.sort_by = "01-AA== Chapter 1 - the First Chapter".into();
+        new_chapter1.title.display_by = Chapter::smart_title(&new_chapter1.title.sort_by).into();
+
+        new_scene1.title.sort_by = "03-BB== 3 Scene".into();
+        new_scene1.title.display_by = Scene::smart_title(&new_scene1.title.sort_by).into();
+
+        new_scene2.title.sort_by = "01-AA== The Big First Scene".into();
+        new_scene2.title.display_by = Scene::smart_title(&new_scene1.title.sort_by).into();
+
+        new_scene3.title.sort_by = "01-Ab== 2nd Scene".into();
+        new_scene3.title.display_by = Scene::smart_title(&new_scene1.title.sort_by).into();
+
+        new_chapter1.scene_list.push(new_scene1);
+        new_chapter1.scene_list.push(new_scene2);
+        new_chapter1.scene_list.push(new_scene3);
+        new_chapter1 = Chapter::sort_scene_list(new_chapter1);
+
+        assert_eq!(
+            "Chapter 1 - the First Chapter",
+            new_chapter1
+                .scene_list
+                .first()
+                .expect(&format!("{}", AppErrors::ValidSceneList))
+                .title
+                .display_by
+        );
+
+        assert_eq!("3 Scene", "no");
+    } //fn chapters_must_sort_scenes()
+
     #[test]
     fn app_can_open_path_and_read_structure() {
         let mut my_app = AppCfg::new();
@@ -305,7 +341,6 @@ mod test_driven_design {
     fn app_can_load_path_structure_into_book_structure() {
         let mut my_app = AppCfg::new();
         my_app.content_path = "./content".into();
-        my_app.output_file = "my_book_title".into();
         let path_elm = AppCfg::get_path_elements(&my_app.content_path.clone());
 
         let mut this_book = Book::new();
@@ -353,24 +388,67 @@ mod test_driven_design {
         );
 
         let content_blob = this_book
-                .part_list
-                .last()
-                .expect(&format!("{}", AppErrors::ValidPartList))
-
-                .chapter_list
-                .last()
-                .expect(&format!("{}", AppErrors::ValidChapterList))
-
-                .scene_list
-                .last()
-                .expect(&format!("{}", AppErrors::ValidSceneList))
-                .content.clone();
+            .part_list
+            .last()
+            .expect(&format!("{}", AppErrors::ValidPartList))
+            .chapter_list
+            .last()
+            .expect(&format!("{}", AppErrors::ValidChapterList))
+            .scene_list
+            .last()
+            .expect(&format!("{}", AppErrors::ValidSceneList))
+            .content
+            .clone();
 
         let test_stop = content_blob.len() - 1;
-        let test_start =   test_stop - 13;
-        assert_eq!( "ty tonight.\"\r".to_string(),
-        content_blob[test_start..test_stop]
+        let test_start = test_stop - 13;
+        assert_eq!(
+            "ty tonight.\"\r".to_string(),
+            content_blob[test_start..test_stop]
         );
-
     }
+
+    #[test]
+    fn app_can_write_TOC_to_disk_file() {
+        let mut my_app = AppCfg::new();
+        my_app.content_path = "./content".into();
+        my_app.output_file = "my_book_title".into();
+        let path_elm = AppCfg::get_path_elements(&my_app.content_path.clone());
+
+        let mut this_book = Book::new();
+        for dir_entry in &path_elm {
+            this_book.add_content(&my_app, dir_entry);
+        }
+
+        // =---
+        use std::ffi::OsStr;
+        use std::fs;
+        use std::fs::File;
+        use std::io::prelude::*;
+        use std::path::Path;
+
+        let path_string = &format!("{}/../{}.md", &my_app.content_path, &my_app.output_file);
+        let work_path = Path::new(path_string);
+        let mut work_file = File::create(work_path).expect(&format!("{}", AppErrors::VaildPath));
+
+        this_book = Book::sort_part_list(this_book);
+        for mut part in this_book.part_list {
+            part = Part::sort_chapter_list(part);
+            for mut chapter in part.chapter_list {
+                chapter = Chapter::sort_scene_list(chapter);
+                writeln!(work_file, "## {}", chapter.title.display_by)
+                    .expect(&format!("{}", AppErrors::CannotWriteToFile));
+                for mut scene in chapter.scene_list {
+                    writeln!(work_file, "### {}", scene.title.display_by)
+                        .expect(&format!("{}", AppErrors::CannotWriteToFile));
+                } // for scene
+            } //for chapter
+        } //for part
+
+        let read_buffer =
+            fs::read_to_string(path_string).expect(&format!("{}", AppErrors::ReadableFile));
+
+        assert!(work_path.exists());
+        assert!(read_buffer.contains("## Ch 1 - Nothing To See, Hear"));
+    } // fn app_can_write_TOC_to_disk_file
 } // mod tests
