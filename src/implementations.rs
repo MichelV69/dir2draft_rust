@@ -15,8 +15,8 @@ pub mod List {
     use crate::structs::List::*;
     use crate::traits::List::*;
 
-    impl App {
-        pub fn new() -> Self {
+    impl AppCfgWG for AppCfg {
+        fn new() -> Self {
             Self {
                 content_path: "~".into(),
                 output_file: "dir2draft.manuscript".into(),
@@ -79,7 +79,7 @@ pub mod List {
         }
     }
 
-    impl AppImpls for App {
+    impl AppCfgImpls for AppCfg {
         fn get_path_elements<'a>(content_path: &'a String) -> Vec<String> {
             use walkdir::DirEntry;
             // ---
@@ -87,9 +87,9 @@ pub mod List {
                 this_path
                     .path()
                     .strip_prefix(this_content_path)
-                    .expect(&getExpected(VaildPath))
+                    .expect(&format!("{}", VaildPath))
                     .to_str()
-                    .expect(&getExpected(PlainTextString))
+                    .expect(&format!("{}", PlainTextString))
                     .to_string()
             }
 
@@ -122,10 +122,11 @@ pub mod List {
                 a.title
                     .sort_by
                     .partial_cmp(&b.title.sort_by)
-                    .expect(&getExpected(ValidPartList))
+                    .expect(&format!("{}", ValidPartList))
             });
             to_sort
         }
+
         fn find_part(&mut self, search_title: &str) -> Option<usize> {
             let found_part_index = self
                 .part_list
@@ -137,7 +138,70 @@ pub mod List {
                 Some(0)
             }
         }
-    }
+
+        fn part_exists(&mut self, dir_entry: &str) -> bool {
+            self.part_list.iter().any(|i| i.title.sort_by == dir_entry)
+        }
+
+        fn add_content(&mut self, app: &AppCfg, dir_entry: &str) {
+            let mut part_index: usize = 0;
+            let mut chapter_index: usize = 0;
+            use std::env;
+            use std::fs;
+            use walkdir::DirEntry;
+
+            if self.part_list.len() > 0 {
+                part_index = self.part_list.len() - 1;
+                if self.part_list[part_index].chapter_list.len() > 0 {
+                    chapter_index = self.part_list[part_index].chapter_list.len() - 1
+                };
+            };
+
+            if dir_entry.contains(".md") {
+                let mut this_scene = Scene::new();
+                this_scene.title.sort_by = dir_entry.to_string();
+                this_scene.title.display_by = Scene::smart_title(&this_scene.title.sort_by).into();
+                this_scene.content = Scene::get_content_for(app.content_path.clone(), &dir_entry)
+                    .expect(&format!("{}", PlainTextString));
+                self.part_list[part_index].chapter_list[chapter_index]
+                    .scene_list
+                    .push(this_scene);
+                println!("Added Scene: {:#?}", &dir_entry);
+                return ();
+            }
+
+            let dir_contents = WalkDir::new(app.content_path.clone().clone());
+            for entry in dir_contents
+                .follow_links(true)
+                .into_iter()
+                .filter_map(|e| e.ok())
+            {
+                if entry.file_type().is_dir()
+                    && entry.depth() == 1
+                    && entry.file_name() == dir_entry
+                {
+                    let mut to_add = Part::new();
+                    to_add.title.sort_by = dir_entry.to_string();
+                    to_add.title.display_by = Part::smart_title(&to_add.title.sort_by).into();
+                    self.part_list.push(to_add);
+                    println!("Added Part: {:#?}", &dir_entry);
+                }
+
+                if entry.file_type().is_dir()
+                    && entry.depth() == 2
+                    && entry.file_name() == dir_entry
+                {
+                    let mut to_add = Chapter::new();
+                    to_add.title.sort_by = dir_entry.to_string();
+                    to_add.title.display_by = Chapter::smart_title(&to_add.title.sort_by).into();
+                    self.part_list[part_index].chapter_list.push(to_add);
+                    println!("Added Chapter: {:#?}", &dir_entry);
+                }
+            }
+
+            return ();
+        } // fn add_content
+    } // impl BookImpls for Book
 
     impl PartImpls for Part {
         fn smart_title(sortable_title: &str) -> String {
@@ -145,7 +209,7 @@ pub mod List {
             let smart_title = sortable_title
                 .split(split_meta)
                 .last()
-                .expect(&getExpected(PlainTextString));
+                .expect(&format!("{}", PlainTextString));
             smart_title
                 .trim()
                 .split(' ')
@@ -159,7 +223,7 @@ pub mod List {
                 a.title
                     .sort_by
                     .partial_cmp(&b.title.sort_by)
-                    .expect(&getExpected(ValidChapterList))
+                    .expect(&format!("{}", ValidChapterList))
             });
             to_sort
         }
@@ -171,7 +235,7 @@ pub mod List {
             let smart_title = sortable_title
                 .split(split_meta)
                 .last()
-                .expect(&getExpected(PlainTextString));
+                .expect(&format!("{}", PlainTextString));
             smart_title
                 .trim()
                 .split(' ')
@@ -186,24 +250,32 @@ pub mod List {
             let smart_title = sortable_title
                 .split(split_meta)
                 .last()
-                .expect(&getExpected(PlainTextString));
+                .expect(&format!("{}", PlainTextString));
             smart_title
                 .trim()
                 .split(' ')
                 .filter(|s| !s.is_empty())
                 .join(" ")
         }
-        fn get_content_for(content_path: String, dir_entry: &str) -> String {
-            "got milk".into()
+        fn get_content_for(content_path: String, dir_entry: &str) -> Option<String> {
+            use std::env;
+            use std::fs;
+            use walkdir::DirEntry;
+            let dir_contents = WalkDir::new(content_path.clone());
+            for entry in dir_contents
+                .follow_links(true)
+                .into_iter()
+                .filter_map(|e| e.ok())
+            {
+                if entry.file_type().is_file() && entry.file_name() == dir_entry {
+                    return Some(
+                        fs::read_to_string(entry.path()).expect(&format!("{}", ReadableFile)),
+                    );
+                }
+            }
+            return None;
         }
     }
-
-    //        fn is_a_new_part(&mut self, unsorted_title: &str) -> bool {
-    //            !self.part_list.iter().any(|&i| i.title.sort_by == unsorted_title)
-    //        }
-    //
-
-    //        }
 }
 
 // --- implementations.rs

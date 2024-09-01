@@ -2,10 +2,12 @@
 pub mod List {
     use crate::error_handling::*;
     use crate::structs::List::*;
-    use std::borrow::Cow;
+    //use std::borrow::Cow;
 
-    trait App {
-        fn new() -> Self;
+    pub trait AppCfgWG {
+        fn new() -> Self
+        where
+            Self: Sized;
     }
 
     trait Title {
@@ -33,9 +35,11 @@ pub mod List {
     pub trait BookImpls {
         fn sort_part_list(book: Self) -> Self;
         fn find_part(&mut self, unsorted_title: &str) -> Option<usize>;
+        fn add_content(&mut self, app: &AppCfg, dir_entry: &str);
+        fn part_exists(&mut self, dir_entry: &str) -> bool;
     }
 
-    pub trait AppImpls {
+    pub trait AppCfgImpls {
         fn get_path_elements<'a>(content_path: &'a String) -> Vec<String>;
     }
 
@@ -50,7 +54,7 @@ pub mod List {
 
     pub trait SceneImpls {
         fn smart_title(sortable_title: &str) -> String;
-        fn get_content_for(content_path: String, dir_entry: &str) -> String;
+        fn get_content_for(content_path: String, dir_entry: &str) -> Option<String>;
     }
 
     // fn is_a_new_part(&mut self, unsorted_title: &str) -> bool;

@@ -1,7 +1,8 @@
 // --- structs.rs
 pub mod List {
 
-    pub struct App {
+    #[derive(Clone)]
+    pub struct AppCfg {
         pub content_path: String,
         pub output_file: String,
     }
