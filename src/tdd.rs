@@ -97,7 +97,7 @@ mod test_driven_design {
         new_book.part_list.push(new_part3);
         new_book.part_list.push(new_part4);
 
-        new_book = Book::sort_part_list(new_book);
+        new_book = Book::sort_part_list(&new_book);
 
         assert_eq!(new_book.part_list[0].title.sort_by, "001");
         assert_eq!(new_book.part_list[0].title.display_by, "the First Part");
@@ -130,7 +130,7 @@ mod test_driven_design {
 
         new_book.part_list.push(new_part1);
         new_book.part_list.push(new_part2);
-        new_book = Book::sort_part_list(new_book);
+        new_book = Book::sort_part_list(&new_book);
 
         assert_eq!(
             new_book.part_list[0].title.display_by,
@@ -431,33 +431,16 @@ mod test_driven_design {
         let work_path = Path::new(path_string);
         let mut work_file = File::create(work_path).expect(&format!("{}", AppErrors::VaildPath));
 
-        this_book = Book::sort_part_list(this_book);
-        writeln!(work_file, "\r# {}", "Table of Contents")
-            .expect(&format!("{}", AppErrors::CannotWriteToFile));
-        for mut part in this_book.part_list {
-            part = Part::sort_chapter_list(part);
-            writeln!(work_file, "\r## {}", part.title.display_by)
-                .expect(&format!("{}", AppErrors::CannotWriteToFile));
-            for mut chapter in part.chapter_list {
-                chapter = Chapter::sort_scene_list(chapter);
-                writeln!(work_file, "### {}", chapter.title.display_by)
-                    .expect(&format!("{}", AppErrors::CannotWriteToFile));
-                for mut scene in chapter.scene_list {
-                    writeln!(work_file, "#### {}", scene.title.display_by)
-                        .expect(&format!("{}", AppErrors::CannotWriteToFile));
-                } // for scene
-            } //for chapter
-        } //for part
-
-        writeln!(work_file, "{}", "\r---\r").expect(&format!("{}", AppErrors::CannotWriteToFile));
+        Book::write_toc(this_book, &mut work_file);
+        // Book::write_content(this_book.clone(), &work_file);
 
         let read_buffer =
             fs::read_to_string(path_string).expect(&format!("{}", AppErrors::ReadableFile));
 
         assert!(work_path.exists());
-        assert!(read_buffer.contains("# Table of Contents"));
-        assert!(read_buffer.contains("\r## Part 2 - Dogs of War"));
-        assert!(read_buffer.contains("### Ch 1 - Nothing To See, Hear"));
-        assert!(read_buffer.contains("\r---\r"));
+        assert!(read_buffer.contains("# Table of Contents\r\n"));
+        assert!(read_buffer.contains("## Part 2 - Dogs of War\r\n"));
+        assert!(read_buffer.contains("### Ch 1 - Nothing To See, Hear\r\n"));
+        assert!(read_buffer.contains("---\r\n"));
     } // fn app_can_write_TOC_to_disk_file
 } // mod tests

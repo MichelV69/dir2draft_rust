@@ -2,7 +2,7 @@
 pub mod List {
     use crate::error_handling::*;
     use crate::structs::List::*;
-    //use std::borrow::Cow;
+    use std::fs::File;
 
     pub trait AppCfgWG {
         fn new() -> Self
@@ -15,7 +15,9 @@ pub mod List {
     }
 
     trait Book {
-        fn new() -> Self;
+        fn new() -> Self
+        where
+            Self: Sized;
     }
 
     trait Part {
@@ -33,7 +35,8 @@ pub mod List {
     }
 
     pub trait BookImpls {
-        fn sort_part_list(book: Self) -> Self;
+        fn sort_part_list(book: &Self) -> Self;
+        fn write_toc(book: Self, output_file: &mut File);
         fn find_part(&mut self, unsorted_title: &str) -> Option<usize>;
         fn add_content(&mut self, app: &AppCfg, dir_entry: &str);
         fn part_exists(&mut self, dir_entry: &str) -> bool;
