@@ -158,8 +158,7 @@ pub mod List {
             three_dashes(output_file);
         }
 
-        fn write_content(book: Self, output_file: &mut File)
-        {
+        fn write_content(book: Self, output_file: &mut File) {
             fn three_dashes(output_file: &mut File) {
                 writeln!(output_file, "{}", "\r\n---\r\n")
                     .expect(&format!("{}", AppErrors::CannotWriteToFile));
@@ -184,7 +183,7 @@ pub mod List {
                         writeln!(output_file, "#### {}\r\n", scene.title.display_by)
                             .expect(&format!("{}", AppErrors::CannotWriteToFile));
                         writeln!(output_file, "#### {}\r\n", scene.content)
-                           .expect(&format!("{}", AppErrors::CannotWriteToFile));
+                            .expect(&format!("{}", AppErrors::CannotWriteToFile));
                     } // for scene
                 } //for chapter
             } //for part

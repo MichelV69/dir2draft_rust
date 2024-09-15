@@ -445,6 +445,5 @@ mod test_driven_design {
         assert!(read_buffer.contains("\"You got statements from witnesses?\""));
         assert!(read_buffer.contains("Then he'd met Sharlene, and then Jeanie and Rosie."));
         assert!(read_buffer.contains("\"I *told* you that mine was a special kind of evil.\""));
-
     } // fn app_can_write_TOC_to_disk_file
 } // mod tests
