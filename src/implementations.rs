@@ -129,8 +129,8 @@ pub mod List {
 
         fn write_toc(book: Self, output_file: &mut File) {
             fn three_dashes(output_file: &mut File) {
-            writeln!(output_file, "{}", "\r\n---\r\n")
-                .expect(&format!("{}", AppErrors::CannotWriteToFile));
+                writeln!(output_file, "{}", "\r\n---\r\n")
+                    .expect(&format!("{}", AppErrors::CannotWriteToFile));
             }
 
             let mut this_book: Book = book.clone();
