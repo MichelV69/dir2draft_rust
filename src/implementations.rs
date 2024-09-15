@@ -158,7 +158,39 @@ pub mod List {
             three_dashes(output_file);
         }
 
-        // fn write_content(mut book: Book, mut output_file: &File){ }
+        fn write_content(book: Self, output_file: &mut File)
+        {
+            fn three_dashes(output_file: &mut File) {
+                writeln!(output_file, "{}", "\r\n---\r\n")
+                    .expect(&format!("{}", AppErrors::CannotWriteToFile));
+            }
+
+            let mut this_book: Book = book.clone();
+            writeln!(output_file, "\r\n# {}\r\n", book.title.display_by)
+                .expect(&format!("{}", AppErrors::CannotWriteToFile));
+
+            this_book = Book::sort_part_list(&this_book);
+
+            for mut part in this_book.part_list {
+                part = Part::sort_chapter_list(part);
+                three_dashes(output_file);
+                writeln!(output_file, "## {}\r\n", part.title.display_by)
+                    .expect(&format!("{}", AppErrors::CannotWriteToFile));
+                for mut chapter in part.chapter_list {
+                    chapter = Chapter::sort_scene_list(chapter);
+                    writeln!(output_file, "### {}\r\n", chapter.title.display_by)
+                        .expect(&format!("{}", AppErrors::CannotWriteToFile));
+                    for mut scene in chapter.scene_list {
+                        writeln!(output_file, "#### {}\r\n", scene.title.display_by)
+                            .expect(&format!("{}", AppErrors::CannotWriteToFile));
+                        writeln!(output_file, "#### {}\r\n", scene.content)
+                           .expect(&format!("{}", AppErrors::CannotWriteToFile));
+                    } // for scene
+                } //for chapter
+            } //for part
+
+            three_dashes(output_file);
+        }
 
         fn find_part(&mut self, search_title: &str) -> Option<usize> {
             let found_part_index = self

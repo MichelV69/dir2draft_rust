@@ -431,8 +431,8 @@ mod test_driven_design {
         let work_path = Path::new(path_string);
         let mut work_file = File::create(work_path).expect(&format!("{}", AppErrors::VaildPath));
 
-        Book::write_toc(this_book, &mut work_file);
-        // Book::write_content(this_book.clone(), &work_file);
+        Book::write_toc(this_book.clone(), &mut work_file);
+        Book::write_content(this_book, &mut work_file);
 
         let read_buffer =
             fs::read_to_string(path_string).expect(&format!("{}", AppErrors::ReadableFile));
@@ -442,5 +442,9 @@ mod test_driven_design {
         assert!(read_buffer.contains("## Part 2 - Dogs of War\r\n"));
         assert!(read_buffer.contains("### Ch 1 - Nothing To See, Hear\r\n"));
         assert!(read_buffer.contains("---\r\n"));
+        assert!(read_buffer.contains("\"You got statements from witnesses?\""));
+        assert!(read_buffer.contains("Then he'd met Sharlene, and then Jeanie and Rosie."));
+        assert!(read_buffer.contains("\"I *told* you that mine was a special kind of evil.\""));
+
     } // fn app_can_write_TOC_to_disk_file
 } // mod tests
