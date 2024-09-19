@@ -14,7 +14,7 @@ pub mod List {
         #[arg(short, long, default_value_t = ("my_latest_novel".to_string()))]
         pub output_file: String,
         /// the plain-text title of your novel
-         #[arg(short, long, default_value_t = ("My Latest Novel".to_string()))]
+        #[arg(short, long, default_value_t = ("My Latest Novel".to_string()))]
         pub title_text: String,
     }
 
