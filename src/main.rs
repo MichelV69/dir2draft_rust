@@ -7,6 +7,7 @@
 
 // ---- need walkdir for directory traversal
 extern crate walkdir;
+use clap::Parser;
 use std::fs::File;
 use std::io::Write;
 use std::path::Path;
@@ -28,16 +29,17 @@ use crate::traits::List::*;
 // --- the real work to be done
 fn main() {
     // ---- will be incoming ARGs
-    let content_path = "./content";
-    let output_file = "my_book_title";
+    let args = Cli::parse();
+    println!(
+        "pattern: {:?}, path: {:?}",
+        args.content_path, args.output_file
+    );
 
-    todo!("app get args for content path, ");
-    todo!("app get args for output file name");
-    todo!("app get args for book title.to_display");
+    // todo!("app get args for book title.to_display");
 
     let mut my_app = AppCfg::new();
-    my_app.content_path = "./content".into();
-    my_app.output_file = "my_book_title".into();
+    my_app.content_path = args.content_path;
+    my_app.output_file = args.output_file;
     let path_elm = AppCfg::get_path_elements(&my_app.content_path.clone());
 
     let mut this_book = Book::new();
