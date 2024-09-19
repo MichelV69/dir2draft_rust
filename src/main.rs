@@ -31,8 +31,8 @@ fn main() {
     // ---- will be incoming ARGs
     let args = Cli::parse();
     println!(
-        "pattern: {:?}, path: {:?}",
-        args.content_path, args.output_file
+        "content path: {:?}, output file: {:?}, book title: '{:?}'",
+        args.content_path, args.output_file, args.title_text
     );
 
     // todo!("app get args for book title.to_display");
@@ -43,6 +43,7 @@ fn main() {
     let path_elm = AppCfg::get_path_elements(&my_app.content_path.clone());
 
     let mut this_book = Book::new();
+    this_book.title.display_by = args.title_text;
     for dir_entry in &path_elm {
         this_book.add_content(&my_app, dir_entry);
     }
