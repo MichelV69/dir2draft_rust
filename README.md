@@ -10,21 +10,22 @@ I wrote it because that's my own predicament, and I wanted to learn Rust.  So he
 
 ### My Current Project
 
+```dir
 content
-├── 00 - Frontmatter
-│   ├── 00 - Artwork, Cover.md
-│   ├── 00 - Copyright.md
-│   ├── 01 - Content Labels and Guidelines.md
-│   ├── 03 - Foreword.md
-│   ├── 04 - Table of Contents.md
-│   ├── 05 - The Cast
-│   │   ├── the Afterliving.md
-│   │   ├── the Children of the Stars.md
-│   │   ├── the Fäé.md
-│   │   ├── the Pillars of the Obsidian Bridge.md
-│   │   └── the Stones of the Moon.md
-│   └── attachments
-│       └── (Bk.3)RedSeptember-52dpi-720p.v03.jpg
+├── 00 == The Unseen World
+│   └── 00 == the Cast
+│       ├── the Afterliving.md
+│       ├── the Children of the Stars.md
+│       ├── the Fäé.md
+│       ├── the Pillars of the Obsidian Bridge.md
+│       └── the Stones of the Moon.md
+├── DNI == Frontmatter
+│   ├── attachments
+│   │   └── (Bk.3)RedSeptember-52dpi-720p.v03.jpg
+│   ├── DNI == Artwork, Cover.md
+│   ├── DNI == Content Labels and Guidelines.md
+│   ├── DNI == Copyright.md
+│   └── DNI == Foreword.md
 ├── Part 1 - Fourteen Weeks Later
 │   ├── Ch 1 - Nothing To See, Hear
 │   │   ├── 01 == 15h03, Tuesday, 23rd September, 1997.md
@@ -49,6 +50,7 @@ content
         ├── 23h09pm, Friday, 26th September, 1997.md
         ├── 23h31pm, Friday, 26th September, 1997.md
         └── 23h36pm, Friday, 26th September, 1997.md
+```
 
 ### How this gets handled
 
