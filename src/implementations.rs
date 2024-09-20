@@ -214,6 +214,11 @@ pub mod List {
             use std::fs;
             use walkdir::DirEntry;
 
+            if dir_entry.contains("DNI == ") {
+                println!("Skipping Do-Not-Include: {:#?}", &dir_entry);
+                return ();
+            }
+
             if self.part_list.len() > 0 {
                 part_index = self.part_list.len() - 1;
                 if self.part_list[part_index].chapter_list.len() > 0 {
@@ -252,6 +257,7 @@ pub mod List {
                 }
 
                 if entry.file_type().is_dir()
+                    && !format!("{}", entry.path().display()).contains("DNI == ")
                     && entry.depth() == 2
                     && entry.file_name() == dir_entry
                 {

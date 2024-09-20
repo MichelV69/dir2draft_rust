@@ -329,16 +329,18 @@ mod test_driven_design {
 
     #[test]
     fn app_can_open_path_and_read_structure() {
+        let content_path_element_count = 38;
         let mut my_app = AppCfg::new();
         my_app.content_path = "./content".into();
         my_app.output_file = "my_book_title".into();
 
         let my_path_elements = AppCfg::get_path_elements(&my_app.content_path.into());
-        assert_eq!(24, my_path_elements.len());
+        assert_eq!(content_path_element_count, my_path_elements.len());
     }
 
     #[test]
     fn app_can_load_path_structure_into_book_structure() {
+        let content_part_element_count = 3;
         let mut my_app = AppCfg::new();
         my_app.content_path = "./content".into();
         let path_elm = AppCfg::get_path_elements(&my_app.content_path.clone());
@@ -349,24 +351,17 @@ mod test_driven_design {
             this_book.add_content(&my_app, dir_entry);
         }
 
-        assert_eq!(2, this_book.part_list.len());
+        this_book = Book::sort_part_list(&this_book);
+        assert_eq!(content_part_element_count, this_book.part_list.len());
 
         assert_eq!(
             "Part 1 - Fourteen Weeks Later",
-            this_book
-                .part_list
-                .first()
-                .expect(&format!("{}", AppErrors::ValidPartList))
-                .title
-                .sort_by
+            this_book.part_list[1].title.sort_by
         );
 
         assert_eq!(
             "Ch 1 - Nothing To See, Hear",
-            this_book
-                .part_list
-                .first()
-                .expect(&format!("{}", AppErrors::ValidPartList))
+            this_book.part_list[1]
                 .chapter_list
                 .first()
                 .expect(&format!("{}", AppErrors::ValidChapterList))
@@ -376,10 +371,7 @@ mod test_driven_design {
 
         assert_eq!(
             "Ch 2 - Deja Voodoo",
-            this_book
-                .part_list
-                .first()
-                .expect(&format!("{}", AppErrors::ValidPartList))
+            this_book.part_list[1]
                 .chapter_list
                 .last()
                 .expect(&format!("{}", AppErrors::ValidChapterList))
@@ -400,12 +392,10 @@ mod test_driven_design {
             .content
             .clone();
 
+        let expected_excerpt = "ty tonight.\"\r".to_string();
         let test_stop = content_blob.len() - 1;
         let test_start = test_stop - 13;
-        assert_eq!(
-            "ty tonight.\"\r".to_string(),
-            content_blob[test_start..test_stop]
-        );
+        assert_eq!(expected_excerpt, content_blob[test_start..test_stop]);
     }
 
     #[test]
@@ -446,4 +436,31 @@ mod test_driven_design {
         assert!(read_buffer.contains("Then he'd met Sharlene, and then Jeanie and Rosie."));
         assert!(read_buffer.contains("\"I *told* you that mine was a special kind of evil.\""));
     } // fn app_can_write_TOC_to_disk_file
+
+    #[test]
+    fn dni_content_tag_on_folders_respected() {
+        let mut my_app = AppCfg::new();
+        my_app.content_path = "./content".into();
+        let path_elm = AppCfg::get_path_elements(&my_app.content_path.clone());
+
+        let mut this_book = Book::new();
+
+        for dir_entry in &path_elm {
+            this_book.add_content(&my_app, dir_entry);
+        }
+
+        let mut dni_content_found = false;
+        let dni_content_searched = "#Cover Art Image";
+        for mut part in this_book.part_list {
+            for mut chapter in part.chapter_list {
+                for mut scene in chapter.scene_list {
+                    if scene.content.contains(dni_content_searched) {
+                        dni_content_found = true;
+                    }
+                } // for scene
+            } //for chapter
+        } //for part
+
+        assert!(!dni_content_found)
+    } // fn dni_content_tag_on_folders_respected
 } // mod tests
