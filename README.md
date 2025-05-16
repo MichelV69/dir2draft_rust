@@ -1,12 +1,25 @@
 # DIR2DRAFT
 
+---
+
+[![forthebadge made-with-rust](http://ForTheBadge.com/images/badges/made-with-rust.svg)](https://www.rust-lang.org/)
+[![made-with-Markdown](https://img.shields.io/badge/Made%20with-Markdown-1f425f.svg)](http://commonmark.org)
+[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/MichelV69/dir2draft_rust/graphs/commit-activity)
+[![GitHub commits](https://badgen.net/github/commits/MichelV69/dir2draft_rust)](https://GitHub.com/MichelV69/dir2draft_rust/commit/)
+[![GitHub latest commit](https://badgen.net/github/last-commit/MichelV69/dir2draft_rust)](https://GitHub.com/MichelV69/dir2draft_rust/commit/)
+[![GitHub issues](https://img.shields.io/github/issues/MichelV69/dir2draft_rust.svg)](https://GitHub.com/MichelV69/dir2draft_rust/issues/)
+
+[![Dependabot Updates](https://github.com/MichelV69/dir2draft_rust/actions/workflows/dependabot/dependabot-updates/badge.svg)](https://github.com/MichelV69/dir2draft_rust/actions/workflows/dependabot/dependabot-updates)
+
+---
+
+## What Does It Do?
+
 > *"Converts a subdirectory of MD files into a 1 MD file"*
 
 If you're using a tool such as Obsidian, with a myriad of sub-folders containing parts and chapters of Markdown or CommonMark files, and need a quick way to tumble through the directory structure and stitch all those files together into a single Markdown/CommonMark file, this is the tool you might need.
 
 I wrote it because that's my own predicament, and I wanted to learn Rust.  So here we are.
-
-## What Does It Do?
 
 ### My Current Project
 
