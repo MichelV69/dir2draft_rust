@@ -1,16 +1,11 @@
 // ---- test_driven_design
 #[cfg(test)]
-mod test_driven_design {
-    // ---- need walkdir for directory traversal
-    extern crate walkdir;
-    use std::fs::File;
-    use std::io::Write;
-    use walkdir::WalkDir;
-
-    use super::*;
-    use crate::error_handling::*;
-    use crate::structs::List::*;
-    use crate::traits::List::*;
+mod suite {
+    use crate::{
+        error_handling::AppErrors,
+        structs::{AppCfg, Book, Chapter, Part, Scene, Title},
+        traits::{AppCfgImpls, AppCfgWG, BookImpls as _, ChapterImpls, PartImpls, SceneImpls},
+    };
 
     #[test]
     fn title_new() {
@@ -291,6 +286,7 @@ mod test_driven_design {
         );
     }
 
+    #[test]
     fn chapters_must_sort_scenes() {
         let mut new_chapter1 = Chapter::new();
         let mut new_scene1 = Scene::new();
@@ -304,10 +300,10 @@ mod test_driven_design {
         new_scene1.title.display_by = Scene::smart_title(&new_scene1.title.sort_by).into();
 
         new_scene2.title.sort_by = "01-AA== The Big First Scene".into();
-        new_scene2.title.display_by = Scene::smart_title(&new_scene1.title.sort_by).into();
+        new_scene2.title.display_by = Scene::smart_title(&new_scene2.title.sort_by).into();
 
         new_scene3.title.sort_by = "01-Ab== 2nd Scene".into();
-        new_scene3.title.display_by = Scene::smart_title(&new_scene1.title.sort_by).into();
+        new_scene3.title.display_by = Scene::smart_title(&new_scene3.title.sort_by).into();
 
         new_chapter1.scene_list.push(new_scene1);
         new_chapter1.scene_list.push(new_scene2);
@@ -315,16 +311,24 @@ mod test_driven_design {
         new_chapter1 = Chapter::sort_scene_list(new_chapter1);
 
         assert_eq!(
-            "Chapter 1 - the First Chapter",
             new_chapter1
                 .scene_list
                 .first()
                 .expect(&format!("{}", AppErrors::ValidSceneList))
                 .title
-                .display_by
+                .display_by,
+           "The Big First Scene",
         );
 
-        assert_eq!("3 Scene", "no");
+        assert_eq!(
+            new_chapter1
+                .scene_list
+                .last()
+                .expect(&format!("{}", AppErrors::ValidSceneList))
+                .title
+                .display_by,
+           "3 Scene",
+        );
     } //fn chapters_must_sort_scenes()
 
     #[test]
@@ -399,7 +403,7 @@ mod test_driven_design {
     }
 
     #[test]
-    fn app_can_write_TOC_to_disk_file() {
+    fn app_can_write_toc_to_disk_file() {
         let mut my_app = AppCfg::new();
         my_app.content_path = "./content".into();
         my_app.output_file = "my_book_title".into();
@@ -410,11 +414,8 @@ mod test_driven_design {
             this_book.add_content(&my_app, dir_entry);
         }
 
-        // =---
-        use std::ffi::OsStr;
         use std::fs;
         use std::fs::File;
-        use std::io::prelude::*;
         use std::path::Path;
 
         let path_string = &format!("{}/../{}.md", &my_app.content_path, &my_app.output_file);
@@ -451,15 +452,15 @@ mod test_driven_design {
 
         let mut dni_content_found = false;
         let dni_content_searched = "#Cover Art Image";
-        for mut part in this_book.part_list {
-            for mut chapter in part.chapter_list {
-                for mut scene in chapter.scene_list {
+        this_book.part_list.into_iter().for_each(|part| {
+            part.chapter_list.into_iter().for_each(|chapter| {
+                chapter.scene_list.into_iter().for_each(|scene| {
                     if scene.content.contains(dni_content_searched) {
                         dni_content_found = true;
                     }
-                } // for scene
-            } //for chapter
-        } //for part
+                }); // for scene
+            }); //for chapter
+        }); //for part
 
         assert!(!dni_content_found)
     } // fn dni_content_tag_on_folders_respected
