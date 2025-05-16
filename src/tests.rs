@@ -317,7 +317,7 @@ mod suite {
                 .expect(&format!("{}", AppErrors::ValidSceneList))
                 .title
                 .display_by,
-           "The Big First Scene",
+            "The Big First Scene",
         );
 
         assert_eq!(
@@ -327,7 +327,7 @@ mod suite {
                 .expect(&format!("{}", AppErrors::ValidSceneList))
                 .title
                 .display_by,
-           "3 Scene",
+            "3 Scene",
         );
     } //fn chapters_must_sort_scenes()
 
@@ -344,19 +344,32 @@ mod suite {
 
     #[test]
     fn app_can_load_path_structure_into_book_structure() {
-        let content_part_element_count = 3;
+        let expected_number_parts = 3;
+        let expected_number_chapters_p1 = 2;
+        let expected_number_scenes_p1ch1 = 5;
+
         let mut my_app = AppCfg::new();
         my_app.content_path = "./content".into();
         let path_elm = AppCfg::get_path_elements(&my_app.content_path.clone());
 
         let mut this_book = Book::new();
 
-        for dir_entry in &path_elm {
-            this_book.add_content(&my_app, dir_entry);
+        for book_piece in &path_elm {
+            this_book.add_content(&my_app, book_piece);
         }
 
         this_book = Book::sort_part_list(&this_book);
-        assert_eq!(content_part_element_count, this_book.part_list.len());
+        assert_eq!(expected_number_parts, this_book.part_list.len());
+
+        assert_eq!(
+            expected_number_chapters_p1,
+            this_book.part_list[1].chapter_list.len()
+        );
+
+        assert_eq!(
+            expected_number_scenes_p1ch1,
+            this_book.part_list[1].chapter_list[0].scene_list.len()
+        );
 
         assert_eq!(
             "Part 1 - Fourteen Weeks Later",
@@ -365,22 +378,12 @@ mod suite {
 
         assert_eq!(
             "Ch 1 - Nothing To See, Hear",
-            this_book.part_list[1]
-                .chapter_list
-                .first()
-                .expect(&format!("{}", AppErrors::ValidChapterList))
-                .title
-                .sort_by
+            this_book.part_list[1].chapter_list[0].title.sort_by
         );
 
         assert_eq!(
             "Ch 2 - Deja Voodoo",
-            this_book.part_list[1]
-                .chapter_list
-                .last()
-                .expect(&format!("{}", AppErrors::ValidChapterList))
-                .title
-                .sort_by
+            this_book.part_list[1].chapter_list[1].title.sort_by
         );
 
         let content_blob = this_book

@@ -1,16 +1,16 @@
 // --- error_handling
 use std::fmt;
 pub enum AppErrors {
-    IAmAlright,
-    GenericError,
-    VaildPath,
-    ValidPartList,
-    ValidChapterList,
-    ValidSceneList,
-    ValidPartIndex,
-    ReadableFile,
     CannotWriteToFile,
+    GenericError,
+    IAmAlright,
     PlainTextString,
+    ReadableFile,
+    VaildPath,
+    ValidChapterList,
+    ValidPartIndex,
+    ValidPartList,
+    ValidSceneList,
 }
 
 impl fmt::Display for AppErrors {
@@ -19,7 +19,7 @@ impl fmt::Display for AppErrors {
             AppErrors::IAmAlright => write!(f, "OK01 - Not An Error."),
             AppErrors::VaildPath => write!(f, "ER01 - Expected valid Content Path"),
             AppErrors::ValidPartList => write!(f, "ER02 - Expected valid list of Book Parts"),
-            AppErrors::PlainTextString => write!(f, "ER03 - Expected title to be Plain Text"),
+            AppErrors::PlainTextString => write!(f, "ER03 - Expected content to be Plain Text"),
             AppErrors::ValidChapterList => write!(f, "ER04 - Expected valid list of Chapters"),
             AppErrors::ValidSceneList => write!(f, "ER05 - Expected valid list of Scenes"),
             AppErrors::ValidPartIndex => write!(f, "ER06 - That Part of the Book cannot be found"),

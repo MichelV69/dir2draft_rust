@@ -1,10 +1,10 @@
 [package]
 name = "dir2draft_rust"
-version = "0.1.0"
-about = "Converts a subdirectory of MD files into a 1 MD file"
-edition = "2021"
+version = "0.1.1"
+# about = "Converts a subdirectory of MD files into a 1 MD file"
+edition = "2024"
 
 [dependencies]
-clap = {version = "4.5.17" , features = ["derive"] }
-itertools = "0.13.0"
+clap = {version = "4.5.38" , features = ["derive"] }
+itertools = "0.14.0"
 walkdir = "2.5.0"
