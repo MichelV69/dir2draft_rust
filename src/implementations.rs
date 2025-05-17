@@ -272,7 +272,6 @@ impl BookImpls for Book {
         }
 
         let search_for = format!("{}\\{}", app.content_path.clone(), &book_piece);
-        println!("\n----\n was given book_piece: {:#?}", &search_for);
 
         let dir_listing = WalkDir::new(search_for);
         for dir_item in dir_listing
@@ -280,7 +279,6 @@ impl BookImpls for Book {
             .into_iter()
             .filter_map(|e| e.ok())
         {
-            println!("Asked for [{:#?}]", dir_item.path());
             if dir_item.file_type().is_file() {
                 let temp_heap = dir_item
                     .path()
@@ -331,12 +329,18 @@ impl BookImpls for Book {
                         println!("Added Scene: {:#?}", this_scene.title.display_by);
                     }
                     let needle3 = path_pieces[2].to_string().clone();
-                    let mut new_scene_index = self.find_scene(part_index, chapter_index, &needle3).expect("expected usized value");;
+                    let mut new_scene_index = self
+                        .find_scene(part_index, chapter_index, &needle3)
+                        .expect("expected usized value");
 
-                    self.part_list[part_index]
-                        .chapter_list[chapter_index]
-                    .scene_list[new_scene_index]=  Scene::get_content_for(dir_item );
-
+                    self.part_list[part_index].chapter_list[chapter_index].scene_list
+                        [new_scene_index]
+                        .content = match Scene::get_content_for(
+                        &dir_item.path().to_string_lossy().to_string(),
+                    ) {
+                        Some(c) => c,
+                        None => panic!("Unable to find content for scene."),
+                    };
                 } // path_pieces.len() == 3
             };
         } // dir_item.file_type().is_file()
@@ -415,9 +419,7 @@ impl SceneImpls for Scene {
             .filter_map(|e| e.ok())
         {
             if entry.file_type().is_file() {
-                println!("is_file** [{:#?}] [{:#?}]", entry.file_name(), content_file);
                 if content_file.ends_with(entry.file_name().to_str().unwrap()) {
-                    println!("Made it this far. Ish. Looking for {:#?}", entry.path());
                     return Some(
                         fs::read_to_string(entry.path()).expect(&format!("{}", ReadableFile)),
                     );

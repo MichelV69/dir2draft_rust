@@ -25,7 +25,7 @@ fn main() {
 
     let mut my_app = AppCfg::new();
     my_app.content_path = args.content_path;
-    my_app.output_file = args.output_file;
+    my_app.output_file = args.output_file.clone();
     let path_elm = AppCfg::get_path_elements(&my_app.content_path.clone());
 
     let mut this_book = Book::new();
@@ -34,9 +34,14 @@ fn main() {
         this_book.add_content(&my_app, dir_entry);
     }
 
-    let path_string = &format!("{}/../{}.md", &my_app.content_path, &my_app.output_file);
+    let path_string = match args.output_file.is_empty() {
+        false => &my_app.output_file,
+        true => &format!("{}/../{}.md", &my_app.content_path, &my_app.output_file),
+    };
+
     let work_path = Path::new(path_string);
-    let mut work_file = File::create(work_path).expect(&format!("{}", AppErrors::VaildPath));
+    let mut work_file =
+        File::create(work_path).expect(&format!("{} :: [{:#?}]", AppErrors::VaildPath, work_path));
 
     Book::write_toc(this_book.clone(), &mut work_file);
     Book::write_content(this_book, &mut work_file);
