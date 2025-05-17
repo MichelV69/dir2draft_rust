@@ -261,6 +261,7 @@ impl BookImpls for Book {
 
         let mut part_index: usize = 0;
         let mut chapter_index: usize = 0;
+        let mut new_scene_index: usize = 0;
 
         if book_piece.contains("DNI ==") {
             println!("Skipping Do-Not-Include: {:#?}", &book_piece);
@@ -329,7 +330,7 @@ impl BookImpls for Book {
                         println!("Added Scene: {:#?}", this_scene.title.display_by);
                     }
                     let needle3 = path_pieces[2].to_string().clone();
-                    let mut new_scene_index = self
+                    new_scene_index = self
                         .find_scene(part_index, chapter_index, &needle3)
                         .expect("expected usized value");
 
